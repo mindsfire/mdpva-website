@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order - b.data.order);
@@ -18,12 +17,10 @@ const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order -
             only the image's trailing edge (bottom on mobile, right on desktop)
             into the dark canvas, so the hard seam is hidden without darkening
             the rest of the photo. */}
-        <Image
+        <img
           src={slide.data.image}
           alt={slide.data.headline}
           class="h-auto w-full max-h-full max-w-full object-cover object-top brightness-[0.82] [-webkit-mask-image:linear-gradient(to_top,transparent_0%,#000_16%)] [mask-image:linear-gradient(to_top,transparent_0%,#000_16%)] lg:h-full lg:w-auto lg:object-left lg:[-webkit-mask-image:linear-gradient(to_left,transparent_0%,#000_15%)] lg:[mask-image:linear-gradient(to_left,transparent_0%,#000_15%)]"
-          widths={[640, 1024, 1600]}
-          sizes="100vw"
           loading={i === 0 ? "eager" : "lazy"}
         />
         {/* Localized darken behind the text only (not a big gradient over the photo) */}

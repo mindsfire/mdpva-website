@@ -1,6 +1,6 @@
 ---
 name: "Devaraja Studio Rentals"
-logo: "./images/sp3.svg"
+logo: "/uploads/sponsor-sp3.svg"
 tier: "gold"
 url: "https://devarajastudio.example.com"
 startDate: 2026-01-01

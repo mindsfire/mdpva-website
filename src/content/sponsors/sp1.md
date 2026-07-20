@@ -1,6 +1,6 @@
 ---
 name: "Karnataka Tourism Board"
-logo: "./images/sp1.svg"
+logo: "/uploads/sponsor-sp1.svg"
 tier: "platinum"
 url: "https://karnatakatourism.org"
 startDate: 2026-01-01
