@@ -1,0 +1,10 @@
+{
+  "name": "mdpva-website",
+  "compatibility_date": "2024-09-23",
+  // Static-assets-only hosting: serve the built site from ./dist with no Worker
+  // server code (no adapter). This keeps the site fully static, so images are
+  // served as plain files and there is no /_image runtime endpoint.
+  "assets": {
+    "directory": "./dist"
+  }
+}
