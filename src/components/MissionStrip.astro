@@ -1,0 +1,46 @@
+---
+import { getEntry } from "astro:content";
+
+const about = await getEntry("pages", "about");
+const stats = [
+  { value: "1,550+", label: "Active members" },
+  { value: "1998", label: "Established" },
+  { value: "40+", label: "Workshops a year" },
+  { value: "7", label: "Taluk chapters" },
+];
+---
+
+<section class="bg-mdpva-paper px-5 py-[clamp(56px,9vw,110px)] sm:px-8 lg:px-16">
+  <div
+    class="mx-auto grid max-w-[1200px] items-start gap-[clamp(32px,5vw,72px)]"
+    style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));"
+  >
+    <div data-reveal>
+      <div class="mb-4.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+        About the Association
+      </div>
+      <h2 class="text-pretty mb-5 font-serif text-[clamp(26px,3.2vw,40px)] leading-tight font-normal">
+        A guild of working professionals, rooted in the cultural capital of Karnataka.
+      </h2>
+      <p class="max-w-[560px] text-base leading-relaxed text-mdpva-body">
+        {about?.body}
+      </p>
+    </div>
+    <div
+      class="grid grid-cols-2 gap-px border border-mdpva-border-soft bg-mdpva-border-soft"
+    >
+      {
+        stats.map((stat, i) => (
+          <div class="bg-mdpva-paper p-5 sm:p-9" data-reveal style={`--reveal-delay:${i * 80}ms`}>
+            <div class="font-serif text-[clamp(34px,4vw,52px)] leading-none font-medium text-mdpva-ink">
+              {stat.value}
+            </div>
+            <div class="mt-2.5 text-xs tracking-[0.14em] text-mdpva-muted uppercase">
+              {stat.label}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

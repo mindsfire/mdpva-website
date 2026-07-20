@@ -1,0 +1,86 @@
+backend:
+  name: github
+  repo: mindsfire/mdpva-website
+  branch: main
+  base_url: https://mdpva-cms-auth.YOUR-SUBDOMAIN.workers.dev # TODO: replace after deploying the sveltia-cms-auth worker
+
+publish_mode: simple
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "sponsors"
+    label: "Sponsors"
+    folder: "src/content/sponsors"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Sponsor name", name: "name", widget: "string" }
+      - { label: "Logo", name: "logo", widget: "image" }
+      - label: "Tier"
+        name: "tier"
+        widget: "select"
+        options: ["platinum", "gold", "silver"]
+      - { label: "Website URL", name: "url", widget: "string" }
+      - { label: "Sponsorship start date", name: "startDate", widget: "datetime" }
+      - { label: "Sponsorship end date", name: "endDate", widget: "datetime" }
+
+  - name: "events"
+    label: "Events"
+    folder: "src/content/events"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Registration URL", name: "registrationUrl", widget: "string", required: false }
+      - { label: "Featured", name: "isFeatured", widget: "boolean", default: false }
+
+  - name: "gallery"
+    label: "Gallery"
+    folder: "src/content/gallery"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Photographer (member name)", name: "photographer", widget: "string" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options: ["wedding", "wildlife", "portrait", "event", "cinematic"]
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Year", name: "year", widget: "number", value_type: "int" }
+
+  - name: "pages"
+    label: "Pages"
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "hero_slides"
+    label: "Homepage Hero Slides"
+    folder: "src/content/hero-slides"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Eyebrow label", name: "eyebrow", widget: "string", hint: "Small label above the headline" }
+      - { label: "Headline", name: "headline", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Order", name: "order", widget: "number", value_type: "int", hint: "Slides display lowest-to-highest" }

@@ -1,0 +1,117 @@
+---
+import { getCollection } from "astro:content";
+
+const events = (await getCollection("events")).sort(
+  (a, b) => a.data.date.valueOf() - b.data.date.valueOf(),
+);
+
+const monthFmt = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric" });
+const dayFmt = new Intl.DateTimeFormat("en-US", { day: "2-digit" });
+---
+
+<section id="events" class="bg-mdpva-paper py-[clamp(56px,9vw,110px)]">
+  <div class="mx-auto mb-8 flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5 sm:px-8 lg:px-16" data-reveal>
+    <div>
+      <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+        Upcoming Events
+      </div>
+      <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">On the calendar</h2>
+    </div>
+    <div class="flex items-center gap-5">
+      <a href="/events" class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
+        All events →
+      </a>
+      <div class="flex gap-2" data-events-nav>
+        <button
+          type="button"
+          data-scroll="prev"
+          aria-label="Scroll to previous events"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-mdpva-border-soft text-mdpva-ink transition-colors hover:border-mdpva-ink disabled:pointer-events-none disabled:opacity-30"
+        >
+          ←
+        </button>
+        <button
+          type="button"
+          data-scroll="next"
+          aria-label="Scroll to next events"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-mdpva-border-soft text-mdpva-ink transition-colors hover:border-mdpva-ink disabled:pointer-events-none disabled:opacity-30"
+        >
+          →
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16" data-reveal style="--reveal-delay:100ms">
+    <div
+      class="mdpva-hscroll flex snap-x snap-mandatory gap-5 overflow-x-auto py-1 pb-3"
+      style="scrollbar-width: none;"
+    >
+      {
+        events.map((event) => (
+          <article class="flex flex-[0_0_clamp(260px,30vw,340px)] snap-start flex-col border border-mdpva-border-alt bg-mdpva-white">
+            <div class="flex items-baseline justify-between gap-3 px-6 pt-6">
+              <div class="font-serif text-3xl leading-none text-mdpva-accent">
+                {dayFmt.format(event.data.date)}
+              </div>
+              <div class="text-[11px] tracking-[0.14em] text-mdpva-muted uppercase">
+                {monthFmt.format(event.data.date)}
+              </div>
+            </div>
+            <div class="flex flex-1 flex-col gap-2.5 px-6 pt-4.5 pb-6">
+              <div class="text-[11px] font-semibold tracking-[0.14em] text-mdpva-accent uppercase">
+                {event.data.isFeatured ? "Featured" : "Event"}
+              </div>
+              <h3 class="text-pretty font-serif text-[21px] leading-tight font-medium">
+                {event.data.title}
+              </h3>
+              <p class="flex-1 text-[13.5px] leading-relaxed text-mdpva-body">{event.data.description}</p>
+              <div class="mt-1.5 text-[13px] text-mdpva-muted">{event.data.location}</div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const strip = document.querySelector<HTMLElement>(".mdpva-hscroll");
+  const prevBtn = document.querySelector<HTMLButtonElement>('[data-scroll="prev"]');
+  const nextBtn = document.querySelector<HTMLButtonElement>('[data-scroll="next"]');
+
+  if (strip && prevBtn && nextBtn) {
+    const step = () => strip.querySelector("article")?.clientWidth ?? strip.clientWidth * 0.8;
+
+    const updateButtons = () => {
+      const maxScroll = strip.scrollWidth - strip.clientWidth;
+      prevBtn.disabled = strip.scrollLeft <= 4;
+      nextBtn.disabled = strip.scrollLeft >= maxScroll - 4;
+    };
+
+    // `behavior: "smooth"` fights with `scroll-snap-type: mandatory` on
+    // programmatic scrolls in Chromium and silently no-ops; "instant" avoids
+    // the conflict.
+    prevBtn.addEventListener("click", () => {
+      strip.scrollBy({ left: -(step() + 20), behavior: "instant" });
+    });
+
+    nextBtn.addEventListener("click", () => {
+      strip.scrollBy({ left: step() + 20, behavior: "instant" });
+    });
+
+    strip.addEventListener("scroll", updateButtons, { passive: true });
+    window.addEventListener("resize", updateButtons);
+    updateButtons();
+
+    strip.addEventListener(
+      "wheel",
+      (event) => {
+        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+        if (strip.scrollWidth <= strip.clientWidth) return;
+        event.preventDefault();
+        strip.scrollLeft += event.deltaY;
+      },
+      { passive: false },
+    );
+  }
+</script>

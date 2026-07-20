@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+const now = new Date();
+const sponsors = (await getCollection("sponsors")).filter((s) => s.data.endDate >= now);
+
+const tiers = [
+  { key: "platinum", label: "Platinum", size: "h-22 w-55" },
+  { key: "gold", label: "Gold", size: "h-17 w-42" },
+  { key: "silver", label: "Silver", size: "h-13 w-32" },
+] as const;
+---
+
+<section class="border-t border-mdpva-border bg-mdpva-white px-5 py-[clamp(48px,7vw,88px)] sm:px-8 lg:px-16">
+  <div class="mx-auto max-w-[1200px]" data-reveal>
+    <div class="mb-10 text-center text-xs font-semibold tracking-[0.22em] text-mdpva-muted uppercase">
+      Our Sponsors &amp; Partners
+    </div>
+    <div class="flex flex-col gap-8">
+      {
+        tiers.map((tier) => {
+          const tierSponsors = sponsors.filter((s) => s.data.tier === tier.key);
+          if (tierSponsors.length === 0) return null;
+          return (
+            <div class="flex flex-wrap items-center justify-center gap-6">
+              <span class="basis-full text-center text-[10px] tracking-[0.2em] text-mdpva-muted/70 uppercase">
+                {tier.label}
+              </span>
+              {tierSponsors.map((sponsor) => (
+                <a
+                  href={sponsor.data.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={`flex items-center justify-center border border-mdpva-border-alt ${tier.size}`}
+                  aria-label={sponsor.data.name}
+                >
+                  <Image
+                    src={sponsor.data.logo}
+                    alt={sponsor.data.name}
+                    class="max-h-full max-w-full object-contain p-3"
+                    widths={[220, 440]}
+                    sizes="220px"
+                  />
+                </a>
+              ))}
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

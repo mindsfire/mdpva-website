@@ -1,0 +1,137 @@
+---
+const links = [
+  { href: "/gallery#gallery", label: "Gallery" },
+  { href: "/membership#membership", label: "Membership" },
+  { href: "/events#events", label: "Events" },
+  { href: "/directory#directory", label: "Directory" },
+];
+---
+
+<header
+  class="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-4 px-5 py-4 sm:px-8 sm:py-6 lg:px-16 lg:py-7"
+>
+  <a href="/" aria-label="MDPVA home" class="flex items-baseline gap-2.5">
+    <span class="font-serif text-2xl font-semibold tracking-wide text-mdpva-cream">MDPVA</span>
+  </a>
+
+  {/* Desktop nav */}
+  <nav class="hidden items-center gap-6 lg:flex lg:gap-8">
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          class="text-sm tracking-wide text-mdpva-cream/85 transition-colors hover:text-white"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <a
+      href="/membership#join"
+      class="rounded-sm border border-mdpva-cream/40 px-4.5 py-2.5 text-xs font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-white hover:text-mdpva-ink"
+    >
+      Join
+    </a>
+  </nav>
+
+  {/* Mobile: Join CTA + hamburger */}
+  <div class="flex items-center gap-3 lg:hidden">
+    <a
+      href="/membership#join"
+      class="rounded-sm border border-mdpva-cream/40 px-4 py-2 text-xs font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-white hover:text-mdpva-ink"
+    >
+      Join
+    </a>
+    <button
+      type="button"
+      data-menu-open
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      class="flex h-9 w-9 items-center justify-center text-mdpva-cream"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <line x1="3" y1="7" x2="21" y2="7" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="17" x2="21" y2="17" />
+      </svg>
+    </button>
+  </div>
+</header>
+
+{/* Mobile drawer */}
+<div id="mobile-menu" data-menu-drawer class="pointer-events-none fixed inset-0 z-30 lg:hidden">
+  <div
+    data-menu-backdrop
+    class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-300"
+  >
+  </div>
+  <nav
+    data-menu-panel
+    class="absolute top-0 right-0 flex h-full w-72 max-w-[80%] translate-x-full flex-col gap-2 bg-mdpva-ink px-6 py-6 shadow-2xl transition-transform duration-300"
+    aria-label="Mobile navigation"
+  >
+    <button
+      type="button"
+      data-menu-close
+      aria-label="Close menu"
+      class="mb-4 flex h-9 w-9 items-center justify-center self-end text-mdpva-cream"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <line x1="5" y1="5" x2="19" y2="19" />
+        <line x1="19" y1="5" x2="5" y2="19" />
+      </svg>
+    </button>
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          data-menu-link
+          class="border-b border-mdpva-border-dark py-3 font-serif text-xl text-mdpva-cream transition-colors hover:text-mdpva-gold"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <a
+      href="/membership#join"
+      data-menu-link
+      class="mt-6 rounded-sm bg-mdpva-accent px-6 py-3.5 text-center text-sm font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-mdpva-accent-hover"
+    >
+      Become a Member
+    </a>
+  </nav>
+</div>
+
+<script>
+  const drawer = document.querySelector<HTMLElement>("[data-menu-drawer]");
+  const backdrop = document.querySelector<HTMLElement>("[data-menu-backdrop]");
+  const panel = document.querySelector<HTMLElement>("[data-menu-panel]");
+  const openBtn = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+  const closeBtn = document.querySelector<HTMLButtonElement>("[data-menu-close]");
+  const links = document.querySelectorAll<HTMLAnchorElement>("[data-menu-link]");
+
+  if (drawer && backdrop && panel && openBtn && closeBtn) {
+    const open = () => {
+      drawer.classList.remove("pointer-events-none");
+      backdrop.classList.remove("opacity-0");
+      panel.classList.remove("translate-x-full");
+      openBtn.setAttribute("aria-expanded", "true");
+    };
+
+    const close = () => {
+      drawer.classList.add("pointer-events-none");
+      backdrop.classList.add("opacity-0");
+      panel.classList.add("translate-x-full");
+      openBtn.setAttribute("aria-expanded", "false");
+    };
+
+    openBtn.addEventListener("click", open);
+    closeBtn.addEventListener("click", close);
+    backdrop.addEventListener("click", close);
+    links.forEach((link) => link.addEventListener("click", close));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
+  }
+</script>

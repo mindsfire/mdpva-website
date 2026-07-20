@@ -1,0 +1,96 @@
+---
+const quickLinks = [
+  { href: "/gallery#gallery", label: "Member Gallery" },
+  { href: "/membership#membership", label: "Membership Benefits" },
+  { href: "/events#events", label: "Events & Workshops" },
+  { href: "/directory#directory", label: "Member Directory" },
+  { href: "/about#bylaws", label: "Committee & Bylaws" },
+];
+
+const socials = [
+  { href: "https://instagram.com/mdpva", label: "Instagram" },
+  { href: "https://youtube.com/@mdpva", label: "YouTube" },
+  { href: "https://facebook.com/mdpva", label: "Facebook" },
+  { href: "https://wa.me/918212400000", label: "WhatsApp" },
+];
+---
+
+<footer id="join" class="bg-mdpva-ink px-5 pt-14 pb-10 text-mdpva-cream sm:px-8 sm:pt-20 lg:px-16 lg:pt-24">
+  <div class="mx-auto max-w-[1200px]">
+    <div
+      class="grid gap-8 border-b border-mdpva-border-dark pb-12 lg:gap-16"
+      style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));"
+      data-reveal
+    >
+      <div class="flex flex-col gap-4">
+        <div class="font-serif text-2xl font-semibold tracking-wide">MDPVA</div>
+        <p class="max-w-[300px] text-sm leading-relaxed text-mdpva-cream/65">
+          Mysuru District Photography &amp; Videography Association. Representing the district's
+          professional image-makers since 1998.
+        </p>
+        <div class="mt-1 flex gap-3.5">
+          {
+            socials.map((social) => (
+              <a
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[13px] tracking-wide text-mdpva-cream/65 transition-colors hover:text-mdpva-cream"
+              >
+                {social.label}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div class="mb-1 text-[11px] font-semibold tracking-[0.18em] text-mdpva-muted uppercase">
+          Quick links
+        </div>
+        {
+          quickLinks.map((link) => (
+            <a
+              href={link.href}
+              class="text-sm text-mdpva-cream/79 transition-colors hover:text-mdpva-cream"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+      <div class="flex flex-col gap-3">
+        <div class="text-[11px] font-semibold tracking-[0.18em] text-mdpva-muted uppercase">
+          Contact
+        </div>
+        <div class="text-sm leading-relaxed text-mdpva-cream/79">
+          MDPVA Office, Devaraja Mohalla,<br />Mysuru, Karnataka 570001
+        </div>
+        <a href="mailto:office@mdpva.in" class="text-sm text-mdpva-cream/79 transition-colors hover:text-mdpva-cream">
+          office@mdpva.in
+        </a>
+        <a href="tel:+918212400000" class="text-sm text-mdpva-cream/79 transition-colors hover:text-mdpva-cream">
+          +91 821 240 0000
+        </a>
+      </div>
+      <div class="flex flex-col items-start gap-4">
+        <div class="text-[11px] font-semibold tracking-[0.18em] text-mdpva-muted uppercase">
+          Join the association
+        </div>
+        <p class="text-sm leading-relaxed text-mdpva-cream/65">
+          Working photographer or videographer in Mysuru district? Get certified, listed, and
+          connected.
+        </p>
+        <a
+          href="/membership"
+          class="inline-block rounded-sm bg-mdpva-accent px-6 py-3.5 text-[13px] font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-mdpva-accent-hover"
+        >
+          Become a Member
+        </a>
+      </div>
+    </div>
+    <div class="flex flex-wrap justify-between gap-4 pt-6 text-xs text-mdpva-muted">
+      <span>© 2026 Mysuru District Photography &amp; Videography Association</span>
+      <span>All photographs © their respective member photographers</span>
+    </div>
+  </div>
+</footer>

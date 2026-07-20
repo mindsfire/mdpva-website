@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>MDPVA CMS</title>
+    <script>
+      // Sveltia sets document.title to "Sveltia CMS" at runtime, so we re-assert
+      // our title (and favicon) whenever the <head> changes.
+      const TITLE = "MDPVA CMS";
+      function brand() {
+        if (document.title !== TITLE) document.title = TITLE;
+        let icon = document.querySelector('link[rel="icon"]');
+        if (!icon) {
+          icon = document.createElement("link");
+          icon.rel = "icon";
+          document.head.appendChild(icon);
+        }
+        if (icon.getAttribute("href") !== "/favicon.svg") {
+          icon.type = "image/svg+xml";
+          icon.href = "/favicon.svg";
+        }
+      }
+      brand();
+      new MutationObserver(brand).observe(document.head, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Sveltia CMS — a modern, Decap-compatible Git-based editor.
+         Reads config.yml in this folder; writes Markdown to the repo. -->
+    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+  </body>
+</html>
