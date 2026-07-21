@@ -2,7 +2,7 @@ backend:
   name: github
   repo: mindsfire/mdpva-website
   branch: main
-  base_url: https://sveltia-cms-auth.sandeshparjanya.workers.dev
+  base_url: https://mdpva-cms-auth.sandeshparjanya.workers.dev
 
 publish_mode: simple
 media_folder: "public/uploads"
