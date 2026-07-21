@@ -1,0 +1,103 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import PageHero from "../components/PageHero.astro";
+import Footer from "../components/Footer.astro";
+
+const members = (await getCollection("board")).sort(
+  (a, b) => a.data.tier - b.data.tier || a.data.order - b.data.order,
+);
+const tiers = [1, 2, 3, 4].map((t) => members.filter((m) => m.data.tier === t));
+
+// Portrait sizes shrink down the pyramid; the gold double-ring frame echoes
+// the association's printed invitation identity.
+const ringSize = ["h-40 w-40 sm:h-44 sm:w-44", "h-36 w-36 sm:h-40 sm:w-40", "h-28 w-28 sm:h-32 sm:w-32", "h-24 w-24 sm:h-28 sm:w-28"];
+const tierLabels = ["", "", "Office Bearers", "Directors"];
+---
+
+<Layout
+  title="Board of Directors"
+  description="The executive committee of the Mysuru District Photographers and Videographers Association ® for the 2025–27 term — office bearers and directors."
+>
+  <Header />
+  <PageHero
+    eyebrow="Executive Committee · 2025–27"
+    title="Board of Directors"
+    description="The elected office bearers and directors who lead the association through the 2025–27 term."
+  />
+
+  <section class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div class="mx-auto flex max-w-[1100px] flex-col items-center">
+      {
+        tiers.map((tier, ti) => (
+          <>
+            {ti > 0 && (
+              <div class="mdpva-connector h-10 w-px bg-mdpva-gold sm:h-14" aria-hidden="true" />
+            )}
+            {tierLabels[ti] && (
+              <div
+                class="mb-6 border-b border-mdpva-gold/50 pb-2 text-[11px] font-semibold tracking-[0.24em] text-mdpva-accent uppercase"
+                data-reveal
+              >
+                {tierLabels[ti]}
+              </div>
+            )}
+            <div class="flex flex-wrap items-start justify-center gap-x-8 gap-y-10 sm:gap-x-12">
+              {tier.map((member, mi) => (
+                <figure
+                  class="m-0 flex w-36 flex-col items-center gap-3.5 text-center sm:w-44"
+                  data-reveal
+                  style={`--reveal-delay:${mi * 110}ms`}
+                >
+                  <div
+                    class={`relative flex items-center justify-center rounded-full ${ringSize[ti]}`}
+                  >
+                    <span class="absolute inset-0 rounded-full border-2 border-mdpva-gold" aria-hidden="true" />
+                    <span class="absolute inset-[5px] rounded-full border border-mdpva-accent/70" aria-hidden="true" />
+                    <img
+                      src={member.data.photo}
+                      alt={`Portrait of ${member.data.name}`}
+                      loading={ti > 1 ? "lazy" : undefined}
+                      class="absolute inset-[9px] h-[calc(100%-18px)] w-[calc(100%-18px)] rounded-full object-cover"
+                    />
+                  </div>
+                  <figcaption>
+                    <div class="font-serif text-[16px] leading-snug font-medium text-mdpva-ink">
+                      {member.data.name}
+                    </div>
+                    <div class="mt-1 text-[12px] font-semibold tracking-[0.12em] text-mdpva-accent uppercase">
+                      {member.data.designation}
+                    </div>
+                    {member.data.note && (
+                      <div class="mt-1 text-[12px] text-mdpva-muted">{member.data.note}</div>
+                    )}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="bg-mdpva-ink px-5 py-[clamp(48px,7vw,80px)] text-mdpva-cream sm:px-8 lg:px-16">
+    <div class="mx-auto flex max-w-[840px] flex-col items-center gap-5 text-center" data-reveal>
+      <h2 class="font-serif text-[clamp(24px,3vw,36px)] font-normal">
+        A committee elected by the members, for the members
+      </h2>
+      <p class="max-w-[560px] text-[15px] leading-relaxed text-mdpva-cream/70">
+        The executive committee is elected every two years at the annual general meeting. Read
+        about the association's journey since 2000 on our legacy page.
+      </p>
+      <a
+        href="/about"
+        class="rounded-sm border border-mdpva-cream/40 px-6 py-3 text-[13px] font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-white hover:text-mdpva-ink"
+      >
+        Our legacy
+      </a>
+    </div>
+  </section>
+  <Footer />
+</Layout>

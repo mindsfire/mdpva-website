@@ -1,14 +1,52 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
+import PageHero from "../components/PageHero.astro";
 import Footer from "../components/Footer.astro";
+
+const tierRank = { platinum: 0, gold: 1, silver: 2 } as const;
+const sponsors = (await getCollection("sponsors")).sort(
+  (a, b) => tierRank[a.data.tier] - tierRank[b.data.tier],
+);
 ---
 
-<Layout title="Sponsors">
+<Layout
+  title="Sponsors"
+  description="Partners and sponsors supporting the Mysuru District Photographers and Videographers Association ® and its events, workshops, and annual salon."
+>
   <Header />
-  <section class="bg-mdpva-ink px-5 pt-32 pb-20 text-mdpva-cream sm:px-8 lg:px-16">
-    <h1 class="font-serif text-[clamp(32px,4vw,48px)] font-normal">Sponsors</h1>
-    <p class="mt-4 max-w-xl text-mdpva-cream/70">This page is coming soon.</p>
+  <PageHero
+    eyebrow="Sponsors & Partners"
+    title="The businesses behind the association"
+    description="Equipment houses, labs, and local businesses that support MDPVA's events, workshops, and the annual district salon."
+  />
+  <section class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div
+      class="mx-auto grid max-w-[1100px] gap-6"
+      style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));"
+    >
+      {
+        sponsors.map((sponsor, i) => (
+          <a
+            href={sponsor.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex flex-col items-center gap-4 border border-mdpva-border-alt bg-mdpva-white p-8 text-center transition-shadow duration-300 hover:shadow-lg"
+            data-reveal
+            style={`--reveal-delay:${Math.min(i, 5) * 90}ms`}
+          >
+            <img src={sponsor.data.logo} alt={`${sponsor.data.name} logo`} loading="lazy" class="h-16 w-auto object-contain" />
+            <div>
+              <div class="text-[15px] font-semibold text-mdpva-ink">{sponsor.data.name}</div>
+              <div class="mt-1 text-[11px] tracking-[0.14em] text-mdpva-accent uppercase">
+                {sponsor.data.tier} sponsor
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
   </section>
   <Footer />
 </Layout>

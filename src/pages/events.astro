@@ -1,14 +1,117 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
+import PageHero from "../components/PageHero.astro";
 import Footer from "../components/Footer.astro";
+
+const all = (await getCollection("events")).sort(
+  (a, b) => a.data.date.valueOf() - b.data.date.valueOf(),
+);
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const upcoming = all.filter((e) => e.data.date >= today);
+const past = all.filter((e) => e.data.date < today).reverse();
+
+const dateFmt = new Intl.DateTimeFormat("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 ---
 
-<Layout title="Events">
+<Layout
+  title="Events"
+  description="Workshops, photo walks, masterclasses, and the annual district salon — upcoming and past events of the Mysuru District Photographers and Videographers Association ®."
+>
   <Header />
-  <section class="bg-mdpva-ink px-5 pt-32 pb-20 text-mdpva-cream sm:px-8 lg:px-16">
-    <h1 class="font-serif text-[clamp(32px,4vw,48px)] font-normal">Events</h1>
-    <p class="mt-4 max-w-xl text-mdpva-cream/70">This page is coming soon.</p>
+  <PageHero
+    eyebrow="Events & Workshops"
+    title="On the calendar"
+    description="Masterclasses, equipment demos, photo walks, and the annual district salon — free or discounted for MDPVA members."
+  />
+
+  <section id="events" class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div class="mx-auto max-w-[1200px]">
+      <h2 class="mb-8 font-serif text-[clamp(24px,2.8vw,34px)] font-normal" data-reveal>Upcoming</h2>
+      {
+        upcoming.length === 0 && (
+          <p class="text-mdpva-body" data-reveal>
+            No events scheduled right now — check back soon or follow us on social media.
+          </p>
+        )
+      }
+      <div class="grid gap-5" style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));">
+        {
+          upcoming.map((event, i) => (
+            <article
+              class="flex flex-col border border-mdpva-border-alt bg-mdpva-white transition-shadow duration-300 hover:shadow-lg"
+              data-reveal
+              style={`--reveal-delay:${Math.min(i, 5) * 80}ms`}
+            >
+              <div class="relative aspect-[16/9] overflow-hidden bg-mdpva-border-tile">
+                <img
+                  src={event.data.image}
+                  alt={event.data.title}
+                  loading="lazy"
+                  class="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
+                />
+                {event.data.isFeatured && (
+                  <span class="absolute top-3 left-3 bg-mdpva-accent px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] text-mdpva-cream uppercase">
+                    Featured
+                  </span>
+                )}
+              </div>
+              <div class="flex flex-1 flex-col gap-2.5 p-6">
+                <div class="text-[12px] font-semibold tracking-[0.12em] text-mdpva-accent uppercase">
+                  {dateFmt.format(event.data.date)}
+                </div>
+                <h3 class="text-pretty font-serif text-[21px] leading-tight font-medium">
+                  {event.data.title}
+                </h3>
+                <p class="flex-1 text-[13.5px] leading-relaxed text-mdpva-body">
+                  {event.data.description}
+                </p>
+                <div class="text-[13px] text-mdpva-muted">{event.data.location}</div>
+                {event.data.registrationUrl && (
+                  <a
+                    href={event.data.registrationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-2 inline-block self-start border-b border-current pb-0.5 text-sm font-semibold tracking-wide"
+                  >
+                    Register →
+                  </a>
+                )}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      {
+        past.length > 0 && (
+          <>
+            <h2 class="mt-16 mb-8 font-serif text-[clamp(24px,2.8vw,34px)] font-normal" data-reveal>
+              Past events
+            </h2>
+            <div class="grid gap-5" style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));">
+              {past.map((event, i) => (
+                <article
+                  class="flex flex-col gap-2 border border-mdpva-border-alt bg-mdpva-white p-6 opacity-80"
+                  data-reveal
+                  style={`--reveal-delay:${Math.min(i, 5) * 80}ms`}
+                >
+                  <div class="text-[12px] font-semibold tracking-[0.12em] text-mdpva-muted uppercase">
+                    {dateFmt.format(event.data.date)}
+                  </div>
+                  <h3 class="text-pretty font-serif text-[19px] leading-tight font-medium">
+                    {event.data.title}
+                  </h3>
+                  <div class="text-[13px] text-mdpva-muted">{event.data.location}</div>
+                </article>
+              ))}
+            </div>
+          </>
+        )
+      }
+    </div>
   </section>
   <Footer />
 </Layout>

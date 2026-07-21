@@ -7,18 +7,22 @@ import FeaturedGallery from "../components/FeaturedGallery.astro";
 import MembershipBenefits from "../components/MembershipBenefits.astro";
 import UpcomingEvents from "../components/UpcomingEvents.astro";
 import SponsorStrip from "../components/SponsorStrip.astro";
-import DirectoryTeaser from "../components/DirectoryTeaser.astro";
+import PressStrip from "../components/PressStrip.astro";
+import TestimonialsMarquee from "../components/TestimonialsMarquee.astro";
 import Footer from "../components/Footer.astro";
 ---
 
-<Layout title="Home">
+<Layout
+  description="Mysuru District Photographers and Videographers Association ® — the registered professional body for photographers and videographers of Mysuru district since 2000. Membership, events, workshops, and member work."
+>
   <Header />
   <Hero />
   <MissionStrip />
   <FeaturedGallery />
   <MembershipBenefits />
   <UpcomingEvents />
+  <PressStrip />
   <SponsorStrip />
-  <DirectoryTeaser />
+  <TestimonialsMarquee theme="accent" />
   <Footer />
 </Layout>

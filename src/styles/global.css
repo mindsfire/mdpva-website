@@ -131,3 +131,91 @@
     transform: scaleX(1);
   }
 }
+
+/* Testimonials marquee — a continuously drifting track. The track holds the
+   card list twice; translating -50% then looping is seamless. Pauses on hover.
+   Reduced-motion / no-JS fallback: static horizontally-scrollable strip. */
+.mdpva-marquee {
+  overflow: hidden;
+}
+.mdpva-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 20px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mdpva-marquee-track {
+    animation: marqueeDrift var(--marquee-duration, 55s) linear infinite;
+    will-change: transform;
+  }
+  .mdpva-marquee:hover .mdpva-marquee-track {
+    animation-play-state: paused;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mdpva-marquee {
+    overflow-x: auto;
+  }
+}
+@keyframes marqueeDrift {
+  to {
+    transform: translateX(calc(-50% - 10px));
+  }
+}
+
+/* Board hierarchy — vertical gold connector lines "draw" downward once the
+   tier is revealed (scaleY from the top). */
+.mdpva-connector {
+  transform-origin: top center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .mdpva-connector {
+    transform: scaleY(0);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  }
+  .js .mdpva-connector.is-visible {
+    transform: scaleY(1);
+  }
+}
+
+/* About timeline — items slide in from alternating sides. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal-left] {
+    opacity: 0;
+    transform: translateX(-34px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .js [data-reveal-right] {
+    opacity: 0;
+    transform: translateX(34px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .js [data-reveal-left].is-visible,
+  .js [data-reveal-right].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Gallery filter re-flow — cards fade/scale in when a filter is applied. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-gallery-grid].is-filtering [data-category] {
+    animation: cardIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

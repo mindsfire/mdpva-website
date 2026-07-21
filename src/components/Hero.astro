@@ -119,7 +119,6 @@ const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order -
     const slideEls = Array.from(root.querySelectorAll<HTMLElement>("[data-slide]"));
     const textEls = Array.from(root.querySelectorAll<HTMLElement>("[data-slide-text]"));
     const dots = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-hero-dot]"));
-    const dotsWrap = root.querySelector<HTMLElement>("[data-hero-dots]");
     const prevBtn = root.querySelector<HTMLButtonElement>("[data-hero-prev]");
     const nextBtn = root.querySelector<HTMLButtonElement>("[data-hero-next]");
 
@@ -184,15 +183,6 @@ const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order -
         show(Number(dot.dataset.index));
         start();
       });
-    });
-
-    root.addEventListener("mouseenter", () => {
-      stop();
-      dotsWrap?.classList.add("is-paused");
-    });
-    root.addEventListener("mouseleave", () => {
-      start();
-      dotsWrap?.classList.remove("is-paused");
     });
 
     show(0);

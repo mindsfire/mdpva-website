@@ -2,11 +2,13 @@
 import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://mdpva.org',
   output: 'static',
+  integrations: [sitemap()],
 
   // Emit images as plain static assets (no /_image runtime endpoint), so they
   // render on static Cloudflare hosting even if the build runs in Worker mode.

@@ -1,14 +1,41 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
+import PageHero from "../components/PageHero.astro";
 import Footer from "../components/Footer.astro";
 ---
 
-<Layout title="Contact">
+<Layout
+  title="Contact"
+  description="Contact the Mysuru District Photographers and Videographers Association ® — registered office at #224, Narayana Shastri Road, K.R. Mohalla, Mysuru."
+>
   <Header />
-  <section class="bg-mdpva-ink px-5 pt-32 pb-20 text-mdpva-cream sm:px-8 lg:px-16">
-    <h1 class="font-serif text-[clamp(32px,4vw,48px)] font-normal">Contact</h1>
-    <p class="mt-4 max-w-xl text-mdpva-cream/70">This page is coming soon.</p>
+  <PageHero
+    eyebrow="Contact"
+    title="Get in touch"
+    description="Membership applications, event enquiries, and press — write to us or visit the association office."
+  />
+  <section class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div
+      class="mx-auto grid max-w-[900px] gap-10"
+      style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));"
+    >
+      <div data-reveal>
+        <h2 class="mb-3.5 font-serif text-[22px] font-medium">Registered office</h2>
+        <p class="text-[15px] leading-relaxed text-mdpva-body">
+          #224, Narayana Shastri Road,<br />
+          next to Mahalakshmi Temple,<br />
+          K.R. Mohalla, Mysuru – 570024
+        </p>
+      </div>
+      <div data-reveal style="--reveal-delay:100ms">
+        <h2 class="mb-3.5 font-serif text-[22px] font-medium">Write or call</h2>
+        <p class="flex flex-col gap-2 text-[15px] leading-relaxed">
+          <a href="mailto:office@mdpva.in">office@mdpva.in</a>
+          <a href="tel:+918212400000">+91 821 240 0000</a>
+        </p>
+      </div>
+    </div>
   </section>
   <Footer />
 </Layout>

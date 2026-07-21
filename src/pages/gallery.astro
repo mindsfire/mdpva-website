@@ -1,14 +1,107 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
+import PageHero from "../components/PageHero.astro";
 import Footer from "../components/Footer.astro";
+
+const items = (await getCollection("gallery")).sort((a, b) => b.data.year - a.data.year);
+const categories = ["all", "wedding", "wildlife", "portrait", "event", "cinematic"] as const;
 ---
 
-<Layout title="Gallery">
+<Layout
+  title="Gallery"
+  description="Recent work from members of the Mysuru District Photographers and Videographers Association ® — weddings, wildlife, portraits, events, and cinematic frames from across the district."
+>
   <Header />
-  <section class="bg-mdpva-ink px-5 pt-32 pb-20 text-mdpva-cream sm:px-8 lg:px-16">
-    <h1 class="font-serif text-[clamp(32px,4vw,48px)] font-normal">Gallery</h1>
-    <p class="mt-4 max-w-xl text-mdpva-cream/70">This page is coming soon.</p>
+  <PageHero
+    eyebrow="Member Gallery"
+    title="Work from the district"
+    description="Every frame here was made by a verified MDPVA member — from palace weddings to the forests of Nagarahole."
+  />
+
+  <section id="gallery" class="bg-mdpva-white px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div class="mx-auto max-w-[1200px]">
+      <div class="mb-8 flex flex-wrap gap-2" data-gallery-filters data-reveal>
+        {
+          categories.map((cat) => (
+            <button
+              type="button"
+              data-filter={cat}
+              aria-pressed={cat === "all" ? "true" : "false"}
+              class="gallery-filter-btn rounded-full border border-mdpva-border-soft px-4 py-2.5 font-sans text-[13px] tracking-wide text-mdpva-body transition-colors data-[active=true]:border-mdpva-ink data-[active=true]:bg-mdpva-ink data-[active=true]:text-mdpva-cream"
+              data-active={cat === "all"}
+            >
+              {cat === "all" ? "All" : cat.charAt(0).toUpperCase() + cat.slice(1)}
+            </button>
+          ))
+        }
+      </div>
+      <div
+        data-gallery-grid
+        class="grid gap-5"
+        style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));"
+      >
+        {
+          items.map((item, i) => (
+            <figure
+              data-category={item.data.category}
+              class="m-0 flex flex-col gap-3"
+              data-reveal
+              style={`--reveal-delay:${Math.min(i, 5) * 70}ms`}
+            >
+              <div class="relative aspect-4/3 overflow-hidden bg-mdpva-border-tile">
+                <img
+                  src={item.data.image}
+                  alt={`${item.data.category} photograph — ${item.data.title} by ${item.data.photographer}`}
+                  loading="lazy"
+                  class="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
+                />
+              </div>
+              <figcaption class="flex items-baseline justify-between gap-3">
+                <div>
+                  <div class="text-[15px] font-semibold text-mdpva-ink">{item.data.title}</div>
+                  <div class="mt-0.5 text-[13px] text-mdpva-muted">
+                    {item.data.photographer} · {item.data.year}
+                  </div>
+                </div>
+                <div class="text-[11px] whitespace-nowrap tracking-[0.12em] text-mdpva-accent uppercase">
+                  {item.data.category}
+                </div>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
   </section>
   <Footer />
+
+  <script>
+    const filterBar = document.querySelector("[data-gallery-filters]");
+    const grid = document.querySelector<HTMLElement>("[data-gallery-grid]");
+
+    filterBar?.addEventListener("click", (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>(".gallery-filter-btn");
+      if (!button || !grid) return;
+
+      const filter = button.dataset.filter ?? "all";
+
+      filterBar.querySelectorAll<HTMLButtonElement>(".gallery-filter-btn").forEach((btn) => {
+        const isActive = btn === button;
+        btn.dataset.active = String(isActive);
+        btn.setAttribute("aria-pressed", String(isActive));
+      });
+
+      // Re-trigger the card entrance animation on every filter change.
+      grid.classList.remove("is-filtering");
+      void grid.offsetWidth;
+      grid.classList.add("is-filtering");
+
+      grid.querySelectorAll<HTMLElement>("[data-category]").forEach((card) => {
+        const show = filter === "all" || card.dataset.category === filter;
+        card.style.display = show ? "" : "none";
+      });
+    });
+  </script>
 </Layout>
