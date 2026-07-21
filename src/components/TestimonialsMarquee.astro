@@ -1,0 +1,75 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  /** "accent" (homepage band) or "ink" (membership page) */
+  theme?: "accent" | "ink";
+}
+
+const { theme = "accent" } = Astro.props;
+
+const testimonials = (await getCollection("testimonials")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+// The track is rendered twice for a seamless -50% loop; speed scales with count
+// so cards drift at a steady pace regardless of how many exist in the CMS.
+const duration = Math.max(30, testimonials.length * 9);
+
+const sectionBg = theme === "accent" ? "bg-mdpva-accent" : "bg-mdpva-ink";
+const cardBg = theme === "accent" ? "bg-mdpva-white/8" : "bg-mdpva-cream/4";
+---
+
+<section class={`${sectionBg} overflow-hidden px-0 py-[clamp(56px,9vw,100px)] text-mdpva-cream`}>
+  <div class="mx-auto mb-10 max-w-[1200px] px-5 sm:px-8 lg:px-16" data-reveal>
+    <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-cream/72 uppercase">
+      Member Voices
+    </div>
+    <h2 class="text-pretty max-w-[640px] font-serif text-[clamp(26px,3.2vw,40px)] font-normal">
+      What our members say
+    </h2>
+  </div>
+
+  <div class="mdpva-marquee" data-reveal style="--reveal-delay:120ms">
+    <div class="mdpva-marquee-track px-5" style={`--marquee-duration:${duration}s`}>
+      {
+        [0, 1].map((copy) => (
+          <div class="flex gap-5" aria-hidden={copy === 1 ? "true" : undefined}>
+            {testimonials.map((t) => (
+              <figure
+                class={`m-0 flex w-[clamp(280px,80vw,380px)] shrink-0 flex-col justify-between gap-6 border border-mdpva-cream/15 ${cardBg} p-7 sm:p-8`}
+              >
+                <blockquote class="m-0 font-serif text-[17px] leading-relaxed font-light text-mdpva-cream/92 italic">
+                  “{t.data.quote}”
+                </blockquote>
+                <figcaption class="flex items-center gap-3.5">
+                  {t.data.photo ? (
+                    <img
+                      src={t.data.photo}
+                      alt=""
+                      loading="lazy"
+                      class="h-11 w-11 rounded-full border border-mdpva-gold/60 object-cover"
+                    />
+                  ) : (
+                    <span class="flex h-11 w-11 items-center justify-center rounded-full border border-mdpva-gold/60 bg-mdpva-cream/10 font-serif text-sm text-mdpva-gold">
+                      {t.data.memberName
+                        .replace(/^(Sri|Smt)\.?\s+/, "")
+                        .split(" ")
+                        .slice(0, 2)
+                        .map((w) => w[0])
+                        .join("")}
+                    </span>
+                  )}
+                  <div>
+                    <div class="text-sm font-semibold">{t.data.memberName}</div>
+                    <div class="text-[12.5px] text-mdpva-cream/60">{t.data.role}</div>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

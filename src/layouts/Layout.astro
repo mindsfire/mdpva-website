@@ -13,14 +13,22 @@ import "@fontsource/newsreader/500-italic.css";
 import "../styles/global.css";
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
+  /** Absolute or root-relative image for social sharing cards */
+  ogImage?: string;
 }
 
 const {
   title,
-  description = "The professional body for photographers and videographers of Mysuru district.",
+  description = "Mysuru District Photographers and Videographers Association ® — the registered professional body for photographers and videographers of Mysuru district, since 2000.",
+  ogImage = "/uploads/hero-1.jpg",
 } = Astro.props;
+
+// Home gets the bare brand name; inner pages get "Page · MDPVA".
+const fullTitle = title ? `${title} · MDPVA` : "MDPVA";
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(ogImage, Astro.site);
 ---
 
 <!doctype html>
@@ -28,9 +36,23 @@ const {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} · MDPVA</title>
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MDPVA" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
     <script is:inline>
       document.documentElement.classList.add("js");
     </script>
@@ -39,7 +61,9 @@ const {
     <slot />
 
     <script>
-      const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      const els = document.querySelectorAll<HTMLElement>(
+        "[data-reveal], [data-reveal-left], [data-reveal-right], .mdpva-connector",
+      );
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       if (!reduce && "IntersectionObserver" in window) {
@@ -57,6 +81,44 @@ const {
         els.forEach((el) => io.observe(el));
       } else {
         els.forEach((el) => el.classList.add("is-visible"));
+      }
+
+      // Count-up numbers: [data-countup] with data-target (int) counts from 0
+      // when it becomes visible. Suffix (e.g. "+") preserved via data-suffix.
+      const counters = document.querySelectorAll<HTMLElement>("[data-countup]");
+      if (counters.length) {
+        const animate = (el: HTMLElement) => {
+          const target = Number(el.dataset.target ?? "0");
+          const suffix = el.dataset.suffix ?? "";
+          const dur = 1400;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const p = Math.min((now - start) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * eased).toLocaleString("en-IN") + suffix;
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        };
+        if (!reduce && "IntersectionObserver" in window) {
+          const cio = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  animate(entry.target as HTMLElement);
+                  cio.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.4 },
+          );
+          counters.forEach((el) => cio.observe(el));
+        } else {
+          counters.forEach((el) => {
+            el.textContent =
+              Number(el.dataset.target ?? "0").toLocaleString("en-IN") + (el.dataset.suffix ?? "");
+          });
+        }
       }
     </script>
   </body>

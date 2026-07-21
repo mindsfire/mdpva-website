@@ -1,14 +1,123 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
+import PageHero from "../components/PageHero.astro";
+import MembershipBenefits from "../components/MembershipBenefits.astro";
+import TestimonialsMarquee from "../components/TestimonialsMarquee.astro";
 import Footer from "../components/Footer.astro";
+
+const plans = (await getCollection("membershipPlans")).sort((a, b) => a.data.order - b.data.order);
+
+const coverage = [
+  {
+    title: "Who can join",
+    body: "Working photographers and videographers based in Mysuru district — studios, freelancers, cinematographers, and drone operators. Students and apprentices join as Associates.",
+  },
+  {
+    title: "What membership covers",
+    body: "Association ID and certification, all workshops and photo walks, the members-only job board, dispute support with venues and authorities, and voting rights at the AGM.",
+  },
+  {
+    title: "How to apply",
+    body: "Visit the association office with two photographs, ID proof, and proof of professional work, or start by writing to office@mdpva.in. Applications are verified by the executive committee.",
+  },
+];
 ---
 
-<Layout title="Membership">
+<Layout
+  title="Membership"
+  description="Join the Mysuru District Photographers and Videographers Association ® — plans, prices, benefits, and how to apply. Annual, Life, and Associate memberships for the district's professionals."
+>
   <Header />
-  <section class="bg-mdpva-ink px-5 pt-32 pb-20 text-mdpva-cream sm:px-8 lg:px-16">
-    <h1 class="font-serif text-[clamp(32px,4vw,48px)] font-normal">Membership</h1>
-    <p class="mt-4 max-w-xl text-mdpva-cream/70">This page is coming soon.</p>
+  <PageHero
+    eyebrow="Membership"
+    title="Stand with the district's professionals"
+    description="Certification, workshops, referrals, and a professional community behind you — pick the plan that fits where you are in your career."
+  />
+
+  <section id="plans" class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div class="mx-auto max-w-[1100px]">
+      <div
+        class="grid items-stretch gap-6"
+        style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));"
+      >
+        {
+          plans.map((plan, i) => (
+            <div
+              class={`relative flex flex-col gap-6 border p-7 sm:p-9 ${
+                plan.data.highlighted
+                  ? "border-mdpva-accent bg-mdpva-ink text-mdpva-cream shadow-xl lg:-my-3 lg:py-12"
+                  : "border-mdpva-border-alt bg-mdpva-white"
+              }`}
+              data-reveal
+              style={`--reveal-delay:${i * 100}ms`}
+            >
+              {plan.data.highlighted && (
+                <span class="absolute -top-3 left-7 bg-mdpva-accent px-3 py-1 text-[10px] font-semibold tracking-[0.16em] text-mdpva-cream uppercase">
+                  Most valued
+                </span>
+              )}
+              <div>
+                <h2 class="font-serif text-[24px] font-medium">{plan.data.name}</h2>
+                <div class="mt-4 flex items-baseline gap-2">
+                  <span class="font-serif text-[clamp(38px,4vw,52px)] leading-none font-medium">
+                    {plan.data.price}
+                  </span>
+                  <span class={`text-sm ${plan.data.highlighted ? "text-mdpva-cream/60" : "text-mdpva-muted"}`}>
+                    {plan.data.period}
+                  </span>
+                </div>
+              </div>
+              <ul class="m-0 flex flex-1 list-none flex-col gap-3 p-0">
+                {plan.data.features.map((feature) => (
+                  <li class="flex items-start gap-3 text-[14px] leading-relaxed">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" class={`mt-1 shrink-0 ${plan.data.highlighted ? "text-mdpva-gold" : "text-mdpva-accent"}`}>
+                      <path d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span class={plan.data.highlighted ? "text-mdpva-cream/85" : "text-mdpva-body"}>
+                      {feature}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="/contact"
+                class={`rounded-sm px-6 py-3.5 text-center text-[13px] font-semibold tracking-wider uppercase transition-colors ${
+                  plan.data.highlighted
+                    ? "bg-mdpva-accent text-mdpva-cream hover:bg-mdpva-accent-hover"
+                    : "border border-mdpva-ink text-mdpva-ink hover:bg-mdpva-ink hover:text-mdpva-cream"
+                }`}
+              >
+                Apply now
+              </a>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-8 text-center text-[13px] text-mdpva-muted" data-reveal>
+        Prices are indicative — confirm current fees with the association office before applying.
+      </p>
+    </div>
   </section>
+
+  <section class="border-t border-mdpva-border bg-mdpva-white px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div
+      class="mx-auto grid max-w-[1200px] gap-10"
+      style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));"
+    >
+      {
+        coverage.map((item, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 100}ms`}>
+            <h2 class="mb-3.5 font-serif text-[22px] font-medium">{item.title}</h2>
+            <p class="text-[14.5px] leading-relaxed text-mdpva-body">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <MembershipBenefits />
+  <TestimonialsMarquee theme="accent" />
   <Footer />
 </Layout>

@@ -3,10 +3,10 @@ import { getEntry } from "astro:content";
 
 const about = await getEntry("pages", "about");
 const stats = [
-  { value: "1,550+", label: "Active members" },
-  { value: "1998", label: "Established" },
-  { value: "40+", label: "Workshops a year" },
-  { value: "7", label: "Taluk chapters" },
+  { value: "1,550+", label: "Active members", target: 1550, suffix: "+" },
+  { value: "2000", label: "Established" },
+  { value: "40+", label: "Workshops a year", target: 40, suffix: "+" },
+  { value: "7", label: "Taluk chapters", target: 7, suffix: "" },
 ];
 ---
 
@@ -32,7 +32,10 @@ const stats = [
       {
         stats.map((stat, i) => (
           <div class="bg-mdpva-paper p-5 sm:p-9" data-reveal style={`--reveal-delay:${i * 80}ms`}>
-            <div class="font-serif text-[clamp(34px,4vw,52px)] leading-none font-medium text-mdpva-ink">
+            <div
+              class="font-serif text-[clamp(34px,4vw,52px)] leading-none font-medium text-mdpva-ink"
+              {...stat.target ? { "data-countup": "", "data-target": stat.target, "data-suffix": stat.suffix } : {}}
+            >
               {stat.value}
             </div>
             <div class="mt-2.5 text-xs tracking-[0.14em] text-mdpva-muted uppercase">

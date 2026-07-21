@@ -84,3 +84,83 @@ collections:
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Order", name: "order", widget: "number", value_type: "int", hint: "Slides display lowest-to-highest" }
+
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Cover image", name: "coverImage", widget: "image" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", hint: "Short summary shown on the blog list and in search results" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "press"
+    label: "Press / In the Media"
+    folder: "src/content/press"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Headline", name: "title", widget: "string" }
+      - { label: "Publication", name: "publication", widget: "string", hint: "e.g. Star of Mysore" }
+      - { label: "Published on", name: "date", widget: "datetime" }
+      - { label: "Thumbnail", name: "thumbnail", widget: "image" }
+      - { label: "Article URL", name: "url", widget: "string", hint: "Link to the article on the publisher's site" }
+
+  - name: "testimonials"
+    label: "Member Testimonials"
+    folder: "src/content/testimonials"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Member name", name: "memberName", widget: "string" }
+      - { label: "Role", name: "role", widget: "string", hint: "e.g. Wedding photographer, 12 yrs" }
+      - { label: "Quote", name: "quote", widget: "text" }
+      - { label: "Photo", name: "photo", widget: "image", required: false }
+      - { label: "Order", name: "order", widget: "number", value_type: "int" }
+
+  - name: "membership_plans"
+    label: "Membership Plans"
+    folder: "src/content/membership-plans"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Plan name", name: "name", widget: "string" }
+      - { label: "Price", name: "price", widget: "string", hint: "e.g. ₹1,000" }
+      - { label: "Period", name: "period", widget: "string", hint: "e.g. per year / one-time" }
+      - label: "What's included"
+        name: "features"
+        widget: "list"
+        field: { label: "Feature", name: "feature", widget: "string" }
+      - { label: "Highlight this plan", name: "highlighted", widget: "boolean", default: false }
+      - { label: "Order", name: "order", widget: "number", value_type: "int" }
+
+  - name: "board"
+    label: "Board of Directors"
+    folder: "src/content/board"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Designation", name: "designation", widget: "string" }
+      - label: "Tier"
+        name: "tier"
+        widget: "number"
+        value_type: "int"
+        hint: "1 = Honorary President, 2 = President, 3 = office bearers, 4 = directors"
+      - { label: "Order within tier", name: "order", widget: "number", value_type: "int" }
+      - { label: "Photo", name: "photo", widget: "image" }
+      - { label: "Note", name: "note", widget: "string", required: false, hint: "e.g. Former MLA, K.R. Constituency" }

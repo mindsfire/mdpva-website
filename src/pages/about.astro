@@ -1,0 +1,170 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+// Legacy content is intentionally hardcoded (one-time copy, edited in code),
+// unlike the CMS-driven collections. Placeholder story — user corrects.
+const milestones = [
+  {
+    year: "2000",
+    title: "The association is founded",
+    body: "A group of Mysuru's studio photographers and wedding videographers register the association, giving the district's image-makers a single professional voice.",
+  },
+  {
+    year: "2005",
+    title: "First district photography salon",
+    body: "The first juried exhibition of member work opens at Jaganmohan Palace Art Gallery — now an annual fixture of the city's cultural calendar.",
+  },
+  {
+    year: "2012",
+    title: "Official Dasara coverage",
+    body: "MDPVA members are engaged for official coverage of the Mysuru Dasara festivities — a recognition the association has held ever since.",
+  },
+  {
+    year: "2018",
+    title: "Training & certification wing",
+    body: "The association formalises its workshop programme: masterclasses, drone compliance training, and a certification recognised across the district.",
+  },
+  {
+    year: "2025",
+    title: "186th World Photography Day & new committee",
+    body: "The association celebrates World Photography Day at the Institution of Engineers and swears in the 2025–27 executive committee.",
+  },
+];
+
+const boardPreview = (await getCollection("board"))
+  .sort((a, b) => a.data.tier - b.data.tier || a.data.order - b.data.order)
+  .slice(0, 5);
+---
+
+<Layout
+  title="About"
+  description="The legacy of the Mysuru District Photographers and Videographers Association ® — a registered professional body uniting the district's photographers and videographers since 2000."
+>
+  <Header />
+
+  <section class="relative overflow-hidden bg-mdpva-ink px-5 pt-32 pb-20 text-mdpva-cream sm:px-8 lg:px-16 lg:pt-44 lg:pb-28">
+    <div class="mx-auto max-w-[1200px]" data-reveal>
+      <div class="mb-5 text-xs font-semibold tracking-[0.22em] text-mdpva-gold uppercase">
+        About the Association · Since 2000
+      </div>
+      <h1 class="text-pretty max-w-[860px] font-serif text-[clamp(34px,4.8vw,62px)] leading-tight font-normal">
+        A quarter-century behind the lens of Mysuru district
+      </h1>
+      <p class="mt-6 max-w-[640px] text-[16px] leading-relaxed text-mdpva-cream/75">
+        The Mysuru District Photographers and Videographers Association ® is the registered
+        professional body of the district's image-makers. From palace weddings and Dasara
+        processions to the forests of Nagarahole, our members document the life of the cultural
+        capital of Karnataka.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-10 sm:gap-16">
+        <div>
+          <div class="font-serif text-[clamp(36px,4vw,54px)] leading-none font-medium text-mdpva-gold" data-countup data-target="25" data-suffix="+">25+</div>
+          <div class="mt-2 text-xs tracking-[0.14em] text-mdpva-cream/60 uppercase">Years of legacy</div>
+        </div>
+        <div>
+          <div class="font-serif text-[clamp(36px,4vw,54px)] leading-none font-medium text-mdpva-gold" data-countup data-target="1550" data-suffix="+">1,550+</div>
+          <div class="mt-2 text-xs tracking-[0.14em] text-mdpva-cream/60 uppercase">Members strong</div>
+        </div>
+        <div>
+          <div class="font-serif text-[clamp(36px,4vw,54px)] leading-none font-medium text-mdpva-gold" data-countup data-target="7" data-suffix="">7</div>
+          <div class="mt-2 text-xs tracking-[0.14em] text-mdpva-cream/60 uppercase">Taluk chapters</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mdpva-paper px-5 py-[clamp(56px,8vw,110px)] sm:px-8 lg:px-16">
+    <div class="mx-auto max-w-[900px]">
+      <div class="mb-14 text-center" data-reveal>
+        <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+          Our Legacy
+        </div>
+        <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">The journey since 2000</h2>
+      </div>
+
+      <div class="relative">
+        <div
+          class="mdpva-connector absolute top-0 bottom-0 left-4 w-px bg-mdpva-gold/60 sm:left-1/2"
+          aria-hidden="true"
+        >
+        </div>
+        <div class="flex flex-col gap-12">
+          {
+            milestones.map((m, i) => (
+              <div
+                class={`relative flex flex-col gap-2 pl-12 sm:w-1/2 sm:pl-0 ${
+                  i % 2 === 0 ? "sm:self-start sm:pr-14 sm:text-right" : "sm:self-end sm:pl-14"
+                }`}
+                {...(i % 2 === 0 ? { "data-reveal-left": "" } : { "data-reveal-right": "" })}
+              >
+                <span
+                  class={`absolute top-1 left-[9px] h-3.5 w-3.5 rounded-full border-2 border-mdpva-gold bg-mdpva-paper sm:left-auto ${
+                    i % 2 === 0 ? "sm:-right-[7px]" : "sm:-left-[7px]"
+                  }`}
+                  aria-hidden="true"
+                />
+                <div class="font-serif text-[26px] leading-none font-medium text-mdpva-accent">
+                  {m.year}
+                </div>
+                <h3 class="font-serif text-[19px] font-medium text-mdpva-ink">{m.title}</h3>
+                <p class="text-[14px] leading-relaxed text-mdpva-body">{m.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-mdpva-border bg-mdpva-white px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div
+      class="mx-auto grid max-w-[1100px] items-center gap-10"
+      style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));"
+    >
+      <div data-reveal>
+        <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+          Registered Office
+        </div>
+        <h2 class="mb-4 font-serif text-[clamp(24px,2.8vw,34px)] font-normal">Where to find us</h2>
+        <p class="text-[15px] leading-relaxed text-mdpva-body">
+          #224, Narayana Shastri Road,<br />
+          next to Mahalakshmi Temple,<br />
+          K.R. Mohalla, Mysuru – 570024
+        </p>
+        <p class="mt-4 text-[14px] text-mdpva-muted">
+          A registered association under the Karnataka Societies Registration Act.
+        </p>
+      </div>
+      <div data-reveal style="--reveal-delay:120ms">
+        <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+          Leadership
+        </div>
+        <h2 class="mb-4 font-serif text-[clamp(24px,2.8vw,34px)] font-normal">
+          The 2025–27 executive committee
+        </h2>
+        <div class="mb-5 flex">
+          {
+            boardPreview.map((m, i) => (
+              <img
+                src={m.data.photo}
+                alt={m.data.name}
+                loading="lazy"
+                class={`h-14 w-14 rounded-full border-2 border-mdpva-gold object-cover ${i > 0 ? "-ml-3" : ""}`}
+              />
+            ))
+          }
+          <span class="-ml-3 flex h-14 w-14 items-center justify-center rounded-full border-2 border-mdpva-gold bg-mdpva-cream font-serif text-sm text-mdpva-accent">
+            +9
+          </span>
+        </div>
+        <a href="/board" class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
+          Meet the full board →
+        </a>
+      </div>
+    </div>
+  </section>
+  <Footer />
+</Layout>

@@ -61,4 +61,72 @@ const heroSlides = defineCollection({
   }),
 });
 
-export const collections = { sponsors, events, gallery, pages, heroSlides };
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    coverImage: z.string(),
+    author: z.string(),
+    excerpt: z.string(),
+  }),
+});
+
+const press = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/press' }),
+  schema: z.object({
+    title: z.string(),
+    publication: z.string(),
+    date: z.coerce.date(),
+    thumbnail: z.string(),
+    url: z.string().url(),
+  }),
+});
+
+const testimonials = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/testimonials' }),
+  schema: z.object({
+    memberName: z.string(),
+    role: z.string(),
+    quote: z.string(),
+    photo: z.string().optional(),
+    order: z.number().int(),
+  }),
+});
+
+const membershipPlans = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/membership-plans' }),
+  schema: z.object({
+    name: z.string(),
+    price: z.string(),
+    period: z.string(),
+    features: z.array(z.string()),
+    highlighted: z.boolean().default(false),
+    order: z.number().int(),
+  }),
+});
+
+const board = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/board' }),
+  schema: z.object({
+    name: z.string(),
+    designation: z.string(),
+    tier: z.number().int().min(1).max(4),
+    order: z.number().int(),
+    photo: z.string(),
+    note: z.string().optional(),
+  }),
+});
+
+export const collections = {
+  sponsors,
+  events,
+  gallery,
+  pages,
+  heroSlides,
+  blog,
+  press,
+  testimonials,
+  membershipPlans,
+  board,
+};
