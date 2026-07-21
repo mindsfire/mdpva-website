@@ -2,7 +2,7 @@ backend:
   name: github
   repo: mindsfire/mdpva-website
   branch: main
-  base_url: https://mdpva-cms-auth.YOUR-SUBDOMAIN.workers.dev # TODO: replace after deploying the sveltia-cms-auth worker
+  base_url: https://sveltia-cms-auth.sandeshparjanya.workers.dev
 
 publish_mode: simple
 media_folder: "public/uploads"
