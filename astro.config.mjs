@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://mdpva.org',
   output: 'static',
 
   // Emit images as plain static assets (no /_image runtime endpoint), so they

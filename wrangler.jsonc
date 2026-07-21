@@ -6,5 +6,13 @@
   // served as plain files and there is no /_image runtime endpoint.
   "assets": {
     "directory": "./dist"
-  }
+  },
+  // Custom domains. On `wrangler deploy` (from an account that owns the mdpva.org
+  // zone), Cloudflare provisions these domains + their DNS records automatically.
+  // mdpva.org is the canonical URL; www.mdpva.org also serves the site (add a
+  // www -> apex redirect rule in the dashboard later if you want one canonical).
+  "routes": [
+    { "pattern": "mdpva.org", "custom_domain": true },
+    { "pattern": "www.mdpva.org", "custom_domain": true }
+  ]
 }
