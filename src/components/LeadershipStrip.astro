@@ -1,0 +1,93 @@
+---
+import { getCollection } from "astro:content";
+
+const members = (await getCollection("board")).sort(
+  (a, b) => a.data.tier - b.data.tier || a.data.order - b.data.order,
+);
+// The strip features only the top of the pyramid — honorary president and
+// president; everyone else collapses into the "+N" cluster by the CTA.
+const featured = members.filter((m) => m.data.tier <= 2);
+const rest = members.filter((m) => m.data.tier > 2);
+const initials = (name: string) =>
+  name
+    .replace(/^(Sri|Smt)\.?\s+/i, "")
+    .split(/\s+/)
+    .map((w) => w[0])
+    .filter((c) => /[A-Za-z]/.test(c ?? ""))
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+---
+
+<section class="border-t border-mdpva-border bg-mdpva-paper px-5 py-[clamp(56px,9vw,110px)] sm:px-8 lg:px-16">
+  <div
+    class="mx-auto grid max-w-[1200px] items-center gap-[clamp(36px,5vw,72px)]"
+    style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));"
+  >
+    <div data-reveal>
+      <div class="mb-4.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+        Executive Committee · 2025–27
+      </div>
+      <h2 class="text-pretty mb-5 font-serif text-[clamp(26px,3.2vw,40px)] leading-tight font-normal">
+        Led by working professionals, elected by the members.
+      </h2>
+      <p class="max-w-[560px] text-base leading-relaxed text-mdpva-body">
+        Every two years the general body elects the office bearers and directors who steer
+        the association — its workshops, welfare fund, and district chapters.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-5">
+        <a
+          href="/board"
+          class="rounded-sm bg-mdpva-accent px-6 py-3 text-[13px] font-semibold tracking-wider text-white uppercase transition-colors hover:bg-mdpva-accent-hover"
+        >
+          Meet the full board
+        </a>
+        <div class="flex items-center gap-2.5">
+          <div class="flex -space-x-2.5" aria-hidden="true">
+            {
+              rest.slice(0, 4).map((m) => (
+                <span class="flex h-8 w-8 items-center justify-center rounded-full border border-mdpva-gold bg-mdpva-cream text-[10px] font-semibold tracking-wide text-mdpva-accent">
+                  {initials(m.data.name)}
+                </span>
+              ))
+            }
+          </div>
+          <span class="text-[13px] text-mdpva-muted">+{rest.length} office bearers &amp; directors</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-start justify-center gap-x-10 gap-y-8 sm:gap-x-14">
+      {
+        featured.map((member, i) => (
+          <figure
+            class="m-0 flex w-44 flex-col items-center gap-3.5 text-center sm:w-48"
+            data-reveal
+            style={`--reveal-delay:${i * 110}ms`}
+          >
+            <div class="relative flex h-40 w-40 items-center justify-center rounded-full sm:h-44 sm:w-44">
+              <span class="absolute inset-0 rounded-full border-2 border-mdpva-gold" aria-hidden="true" />
+              <span class="absolute inset-[5px] rounded-full border border-mdpva-accent/70" aria-hidden="true" />
+              <img
+                src={member.data.photo}
+                alt={`Portrait of ${member.data.name}`}
+                class="absolute inset-[9px] h-[calc(100%-18px)] w-[calc(100%-18px)] rounded-full object-cover"
+              />
+            </div>
+            <figcaption>
+              <div class="font-serif text-[17px] leading-snug font-medium text-mdpva-ink">
+                {member.data.name}
+              </div>
+              <div class="mt-1 text-[12px] font-semibold tracking-[0.12em] text-mdpva-accent uppercase">
+                {member.data.designation}
+              </div>
+              {member.data.note && (
+                <div class="mt-1 text-[12px] text-mdpva-muted">{member.data.note}</div>
+              )}
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
