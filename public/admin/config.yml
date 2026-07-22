@@ -8,6 +8,20 @@ publish_mode: simple
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
+# Upload guardrails: images are auto-converted to WebP and downscaled to fit
+# 1600px; anything still over 1 MB after transformation is rejected.
+media_libraries:
+  default:
+    config:
+      max_file_size: 1048576
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 1600
+          height: 1600
+
 collections:
   - name: "sponsors"
     label: "Sponsors"
