@@ -1,7 +1,7 @@
 ---
-title: "New office bearers take charge at district photographers' association"
-publication: "Mysooru News"
+title: Photographers-Videographers Assn. demands package
+publication: Star of Mysore
 date: 2025-08-21
-thumbnail: "/uploads/press-new-committee-2025-27.svg"
-url: "https://example.com/press/new-committee-2025-27"
+thumbnail: /uploads/news-32.webp
+url: https://starofmysore.com/photographers-videographers-assn-demands-package/
 ---
