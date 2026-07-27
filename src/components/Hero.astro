@@ -34,14 +34,14 @@ const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order -
   <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[rgba(36,28,17,0.6)] via-[rgba(36,28,17,0.2)] to-transparent"></div>
 
   <div class="absolute inset-x-0 bottom-0 pl-5 pr-5 pb-16 sm:pl-8 sm:pr-8 lg:pl-16 lg:pr-8 lg:pb-22 xl:pr-6">
-    <div class="ml-auto flex max-w-[560px] flex-col items-start xl:max-w-[680px] 2xl:max-w-[880px]">
+    <div class="ml-auto flex max-w-[560px] flex-col items-center text-center xl:max-w-[680px] 2xl:max-w-[880px]">
       <div class="grid">
         {
           slides.map((slide, i) => (
             <div
               data-slide-text
               data-index={i}
-              class="col-start-1 row-start-1 flex flex-col items-start gap-4 transition-opacity duration-500"
+              class="col-start-1 row-start-1 flex flex-col items-center gap-4 transition-opacity duration-500"
               style={i === 0 ? "" : "opacity:0; pointer-events:none;"}
               aria-hidden={i === 0 ? "false" : "true"}
             >
