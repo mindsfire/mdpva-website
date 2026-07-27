@@ -3,7 +3,14 @@ import { getCollection } from "astro:content";
 
 const items = (await getCollection("gallery")).sort((a, b) => b.data.year - a.data.year);
 
-const categories = ["all", "wedding", "wildlife", "portrait", "event", "cinematic"] as const;
+const categories = ["all", "helping-hands", "hospital-care", "tributes", "workshops"] as const;
+const categoryLabels: Record<(typeof categories)[number], string> = {
+  all: "All",
+  "helping-hands": "Helping Hands",
+  "hospital-care": "Hospital Care",
+  tributes: "Tributes",
+  workshops: "Workshops",
+};
 ---
 
 <section id="gallery" class="border-t border-mdpva-border bg-mdpva-white px-5 py-[clamp(56px,9vw,110px)] sm:px-8 lg:px-16">
@@ -11,9 +18,9 @@ const categories = ["all", "wedding", "wildlife", "portrait", "event", "cinemati
     <div class="mb-8 flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
         <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-          Featured Member Work
+          Beyond the Lens
         </div>
-        <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">Recent work from the district</h2>
+        <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">The association at work</h2>
       </div>
       <div class="flex flex-wrap gap-2" data-gallery-filters>
         {
@@ -25,7 +32,7 @@ const categories = ["all", "wedding", "wildlife", "portrait", "event", "cinemati
               class="gallery-filter-btn rounded-full border border-mdpva-border-soft px-4 py-2.5 font-sans text-[13px] tracking-wide text-mdpva-body transition-colors data-[active=true]:border-mdpva-ink data-[active=true]:bg-mdpva-ink data-[active=true]:text-mdpva-cream"
               data-active={cat === "all"}
             >
-              {cat === "all" ? "All" : cat.charAt(0).toUpperCase() + cat.slice(1)}
+              {categoryLabels[cat]}
             </button>
           ))
         }
@@ -47,7 +54,7 @@ const categories = ["all", "wedding", "wildlife", "portrait", "event", "cinemati
             <div class="relative aspect-4/3 overflow-hidden bg-mdpva-border-tile">
               <img
                 src={item.data.image}
-                alt={`${item.data.category} photograph — ${item.data.title} by ${item.data.photographer}`}
+                alt={`${categoryLabels[item.data.category]} — ${item.data.title}`}
                 loading="lazy"
                 class="h-full w-full object-cover"
               />
@@ -58,7 +65,7 @@ const categories = ["all", "wedding", "wildlife", "portrait", "event", "cinemati
                 <div class="mt-0.5 text-[13px] text-mdpva-muted">{item.data.photographer}</div>
               </div>
               <div class="text-[11px] whitespace-nowrap tracking-[0.12em] text-mdpva-accent uppercase">
-                {item.data.category}
+                {categoryLabels[item.data.category]}
               </div>
             </figcaption>
           </figure>
