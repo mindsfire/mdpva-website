@@ -24,6 +24,11 @@
   --color-mdpva-accent-hover: #544726;
   --color-mdpva-gold: #c9bc7e;
 
+  /* Warm dark brown used behind/around photos (hero canvas, letterboxing,
+     scrims) instead of flat black, so exposed edges read as brand-warm
+     rather than a harsh true-black. */
+  --color-mdpva-hero-dark: #241c11;
+
   /* Light-on-dark text, base color; opacity applied via /NN in usage */
   --color-mdpva-cream: #f4f3ef;
 }
