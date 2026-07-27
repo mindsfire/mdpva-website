@@ -1,8 +1,8 @@
 ---
-name: "Chamundi Print Lab"
-logo: "/uploads/sponsor-sp4.svg"
-tier: "silver"
-url: "https://chamundiprint.example.com"
-startDate: 2026-01-01
-endDate: 2026-12-31
+name: Mindsfire Pvt Ltd
+logo: /uploads/logo.svg
+tier: silver
+url: https://mindsfire.com
+startDate: 2026-07-27T05:30
+endDate: 2030-07-31T05:30
 ---
