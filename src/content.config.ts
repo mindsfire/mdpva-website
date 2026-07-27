@@ -37,7 +37,7 @@ const gallery = defineCollection({
   schema: z.object({
     title: z.string(),
     photographer: z.string(),
-    category: z.enum(['wedding', 'wildlife', 'portrait', 'event', 'cinematic']),
+    category: z.enum(['helping-hands', 'hospital-care', 'tributes', 'workshops']),
     image: z.string(),
     year: z.coerce.number().int(),
   }),
