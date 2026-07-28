@@ -32,7 +32,15 @@ const terms = years.map((year) => ({
   />
 
   <div class="sticky top-0 z-10 border-b border-mdpva-border bg-mdpva-white/95 backdrop-blur-sm">
-    <div class="mx-auto max-w-[1200px] px-5 py-3 sm:px-8 lg:px-16">
+    <div class="mx-auto flex max-w-[1200px] items-center gap-3 px-5 py-3 sm:px-8 lg:px-16">
+      <button
+        type="button"
+        data-scroll="prev"
+        aria-label="Scroll to previous terms"
+        class="flex h-9 w-9 flex-none items-center justify-center rounded-full border border-mdpva-border-soft text-mdpva-ink transition-colors hover:border-mdpva-ink disabled:pointer-events-none disabled:opacity-30"
+      >
+        ←
+      </button>
       <div class="mdpva-hscroll flex snap-x snap-mandatory gap-2 overflow-x-auto" style="scrollbar-width: none;">
         {
           terms.map((t) => (
@@ -46,6 +54,14 @@ const terms = years.map((year) => ({
           ))
         }
       </div>
+      <button
+        type="button"
+        data-scroll="next"
+        aria-label="Scroll to next terms"
+        class="flex h-9 w-9 flex-none items-center justify-center rounded-full border border-mdpva-border-soft text-mdpva-ink transition-colors hover:border-mdpva-ink disabled:pointer-events-none disabled:opacity-30"
+      >
+        →
+      </button>
     </div>
   </div>
 
@@ -65,3 +81,31 @@ const terms = years.map((year) => ({
 
   <Footer />
 </Layout>
+
+<script>
+  const strip = document.querySelector<HTMLElement>(".mdpva-hscroll");
+  const prevBtn = document.querySelector<HTMLButtonElement>('[data-scroll="prev"]');
+  const nextBtn = document.querySelector<HTMLButtonElement>('[data-scroll="next"]');
+
+  if (strip && prevBtn && nextBtn) {
+    const step = () => strip.querySelector("a")?.clientWidth ?? strip.clientWidth * 0.8;
+
+    const updateButtons = () => {
+      const maxScroll = strip.scrollWidth - strip.clientWidth;
+      prevBtn.disabled = strip.scrollLeft <= 4;
+      nextBtn.disabled = strip.scrollLeft >= maxScroll - 4;
+    };
+
+    prevBtn.addEventListener("click", () => {
+      strip.scrollBy({ left: -(step() + 40), behavior: "instant" });
+    });
+
+    nextBtn.addEventListener("click", () => {
+      strip.scrollBy({ left: step() + 40, behavior: "instant" });
+    });
+
+    strip.addEventListener("scroll", updateButtons, { passive: true });
+    window.addEventListener("resize", updateButtons);
+    updateButtons();
+  }
+</script>
