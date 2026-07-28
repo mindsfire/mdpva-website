@@ -65,6 +65,12 @@
   display: none;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* Scroll reveal — elements rise + fade in as they enter the viewport.
    JS adds .is-visible (see Layout.astro). Disabled for reduced-motion. */
 @media (prefers-reduced-motion: no-preference) {

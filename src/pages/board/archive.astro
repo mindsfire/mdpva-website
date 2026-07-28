@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import PageHero from "../../components/PageHero.astro";
+import BoardCommitteeGrid from "../../components/BoardCommitteeGrid.astro";
+import Footer from "../../components/Footer.astro";
+
+const allMembers = await getCollection("board");
+const currentYear = Math.max(...allMembers.map((m) => m.data.termStartYear));
+
+const years = [...new Set(allMembers.map((m) => m.data.termStartYear))].sort((a, b) => b - a);
+const terms = years.map((year) => ({
+  year,
+  term: allMembers.find((m) => m.data.termStartYear === year)!.data.term,
+  isCurrent: year === currentYear,
+  members: allMembers
+    .filter((m) => m.data.termStartYear === year)
+    .sort((a, b) => a.data.tier - b.data.tier || a.data.order - b.data.order),
+}));
+---
+
+<Layout
+  title="Committee Archive"
+  description="Every executive committee of the Mysuru District Photographers and Videographers Association ® since 2001, term by term."
+>
+  <Header />
+  <PageHero
+    eyebrow="Since 2001"
+    title="Committee archive"
+    description="Every executive committee the association has elected, term by term. Jump to any year below, or share a direct link to a specific committee."
+  />
+
+  <div class="sticky top-0 z-10 border-b border-mdpva-border bg-mdpva-white/95 backdrop-blur-sm">
+    <div class="mx-auto max-w-[1200px] px-5 py-3 sm:px-8 lg:px-16">
+      <div class="mdpva-hscroll flex snap-x snap-mandatory gap-2 overflow-x-auto" style="scrollbar-width: none;">
+        {
+          terms.map((t) => (
+            <a
+              href={`#${t.term}`}
+              class="flex-none snap-start rounded-full border border-mdpva-border-soft px-4 py-2 text-[13px] font-semibold tracking-wide whitespace-nowrap text-mdpva-body transition-colors hover:border-mdpva-ink hover:text-mdpva-ink"
+            >
+              {t.term}
+              {t.isCurrent && <span class="ml-1.5 text-mdpva-accent">•</span>}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  {
+    terms.map((t, i) => (
+      <section id={t.term} class={`scroll-mt-20 px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16 ${i % 2 === 0 ? "bg-mdpva-paper" : "bg-mdpva-white"}`}>
+        <div class="mx-auto mb-10 max-w-[1100px] text-center" data-reveal>
+          <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+            {t.isCurrent ? "Current Committee" : "Past Committee"}
+          </div>
+          <h2 class="font-serif text-[clamp(24px,2.8vw,34px)] font-normal">The {t.term} committee</h2>
+        </div>
+        <BoardCommitteeGrid members={t.members} />
+      </section>
+    ))
+  }
+
+  <Footer />
+</Layout>
