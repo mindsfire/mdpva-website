@@ -1,0 +1,136 @@
+---
+import { getCollection } from "astro:content";
+
+const allMembers = await getCollection("board");
+const currentYear = Math.max(...allMembers.map((m) => m.data.termStartYear));
+
+const notes = allMembers
+  .filter((m) => m.data.termStartYear === currentYear && m.data.homeMessage && m.data.cutoutPhoto)
+  .sort((a, b) => a.data.tier - b.data.tier);
+---
+
+{
+  notes.length > 0 && (
+    <section class="relative overflow-hidden border-t border-mdpva-border bg-mdpva-paper px-5 py-[clamp(36px,5vw,64px)] sm:px-8 lg:px-16">
+      <div class="mx-auto max-w-[1100px]">
+        <div class="mb-8 text-center" data-reveal>
+          <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+            A Note From Leadership
+          </div>
+          <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">In their own words</h2>
+        </div>
+
+        <div class="relative grid items-end gap-10" style="grid-template-columns: 1fr;" data-notes-root>
+          {notes.map((member, i) => (
+            <div
+              class="col-start-1 row-start-1 grid items-end gap-10 transition-opacity duration-[1200ms] ease-in-out sm:grid-cols-[1.3fr_1fr]"
+              data-note
+              data-index={i}
+              style={i === 0 ? "" : "opacity:0; pointer-events:none;"}
+              aria-hidden={i === 0 ? "false" : "true"}
+            >
+              <div data-reveal>
+                <svg
+                  width="34"
+                  height="26"
+                  viewBox="0 0 34 26"
+                  fill="none"
+                  class="mb-3 text-mdpva-gold"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M0 26V15.6C0 6.3 5.1 0.8 13.4 0L14.7 3.6C9.3 4.9 6.6 8.3 6.4 12.6H13.4V26H0ZM19.9 26V15.6C19.9 6.3 25 0.8 33.3 0L34 3.6C28.6 4.9 25.9 8.3 25.7 12.6H33.3V26H19.9Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <p class="text-pretty flex min-h-[clamp(110px,14vw,140px)] items-start font-handwriting text-[clamp(18px,1.7vw,21px)] leading-[1.4] text-mdpva-ink">
+                  {member.data.homeMessage}
+                </p>
+                <div class="mt-4 flex items-center gap-3">
+                  <span class="h-px w-10 bg-mdpva-gold" aria-hidden="true" />
+                  <div>
+                    <div class="font-serif text-[16px] font-medium text-mdpva-ink">{member.data.name}</div>
+                    <div class="text-[12px] font-semibold tracking-[0.12em] text-mdpva-accent uppercase">
+                      {member.data.designation}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative mx-auto flex h-[260px] w-[210px] items-end justify-center sm:h-[320px] sm:w-[250px]">
+                <div
+                  class="absolute bottom-2 left-1/2 h-8 w-[70%] -translate-x-1/2 rounded-[50%] bg-mdpva-ink/25 blur-xl"
+                  aria-hidden="true"
+                />
+                <img
+                  src={member.data.cutoutPhoto}
+                  alt={`Portrait of ${member.data.name}`}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  class="relative h-full w-full object-contain drop-shadow-[0_18px_20px_rgba(22,21,19,0.18)]"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {notes.length > 1 && (
+          <div class="mt-8 flex justify-center gap-2" data-notes-dots role="tablist" aria-label="Leadership notes">
+            {notes.map((_, i) => (
+              <button
+                type="button"
+                data-note-dot
+                data-index={i}
+                role="tab"
+                aria-selected={i === 0 ? "true" : "false"}
+                aria-label={`Show note ${i + 1}`}
+                class="h-2 w-2 rounded-full bg-mdpva-border-dark transition-all data-[active=true]:w-6 data-[active=true]:bg-mdpva-accent"
+                data-active={i === 0}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-notes-root]");
+  if (root) {
+    const notes = Array.from(root.querySelectorAll<HTMLElement>("[data-note]"));
+    const dots = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-note-dot]"));
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let current = 0;
+    const DISPLAY_MS = 7000;
+
+    const show = (index: number) => {
+      current = (index + notes.length) % notes.length;
+      notes.forEach((el, i) => {
+        el.style.opacity = i === current ? "1" : "0";
+        el.style.pointerEvents = i === current ? "" : "none";
+        el.setAttribute("aria-hidden", String(i !== current));
+      });
+      dots.forEach((dot, i) => {
+        dot.dataset.active = String(i === current);
+        dot.setAttribute("aria-selected", String(i === current));
+      });
+    };
+
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const start = () => {
+      if (timer) clearInterval(timer);
+      if (notes.length > 1 && !reduce) timer = setInterval(() => show(current + 1), DISPLAY_MS);
+    };
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        show(Number(dot.dataset.index));
+        start();
+      });
+    });
+
+    show(0);
+    start();
+  }
+</script>

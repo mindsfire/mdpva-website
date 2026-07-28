@@ -184,3 +184,13 @@ collections:
         widget: "number"
         value_type: "int"
         hint: "The term with the highest start year is automatically shown as the current board on /board — no other flag needed. e.g. 2025"
+      - label: "Homepage welcome message"
+        name: "homeMessage"
+        widget: "text"
+        required: false
+        hint: "Only Honorary President / President need this — shown in the homepage note section. Leave blank for everyone else."
+      - label: "Cutout photo (transparent, no background)"
+        name: "cutoutPhoto"
+        widget: "image"
+        required: false
+        hint: "A background-removed portrait for the homepage note section. Leave blank to skip that person there."
