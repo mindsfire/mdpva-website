@@ -4,6 +4,7 @@
   /* Fonts */
   --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Newsreader", ui-serif, Georgia, serif;
+  --font-handwriting: "Caveat", cursive;
 
   /* Core palette (from Claude Design export) */
   --color-mdpva-paper: #fafaf8;

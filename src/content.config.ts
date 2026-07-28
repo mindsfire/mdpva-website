@@ -121,6 +121,13 @@ const board = defineCollection({
     // termStartYear are shown on /board automatically — no manual flag to
     // remember when a new committee is added.
     termStartYear: z.number().int(),
+    // Optional welcome message shown on the homepage "president's note"
+    // section — only Honorary President / President entries typically set
+    // this; everyone else leaves it blank.
+    homeMessage: z.string().optional(),
+    // Transparent cutout portrait (no background) for the homepage note
+    // section, distinct from the circular `photo` used on /board.
+    cutoutPhoto: z.string().optional(),
   }),
 });
 
