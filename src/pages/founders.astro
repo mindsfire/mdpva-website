@@ -1,0 +1,89 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import PageHero from "../components/PageHero.astro";
+import Footer from "../components/Footer.astro";
+
+// Founders committee is a one-time historical record, hardcoded like the
+// About/legacy page rather than CMS-driven. Placeholder names — user corrects.
+const founders = [
+  { name: "Sri H. R. Krishnappa", designation: "Founding President", photo: "/uploads/founder-hr-krishnappa.svg" },
+  { name: "Sri K. S. Ramegowda", designation: "Founding Vice President", photo: "/uploads/founder-ks-ramegowda.svg" },
+  { name: "Sri M. Basavaraju", designation: "Founding Secretary", photo: "/uploads/founder-m-basavaraju.svg" },
+  { name: "Sri T. N. Chikkanna", designation: "Founding Joint Secretary", photo: "/uploads/founder-tn-chikkanna.svg" },
+  { name: "Sri B. Puttaswamy", designation: "Founding Treasurer", photo: "/uploads/founder-b-puttaswamy.svg" },
+  { name: "Smt. Girija Rao", designation: "Founding Executive Member", photo: "/uploads/founder-girija-rao.svg" },
+  { name: "Sri Nanjundaiah", designation: "Founding Executive Member", photo: "/uploads/founder-nanjundaiah.svg" },
+  { name: "Sri Shivakumar Gowda", designation: "Founding Executive Member", photo: "/uploads/founder-shivakumar-gowda.svg" },
+  { name: "Sri D. R. Mahadevaiah", designation: "Founding Executive Member", photo: "/uploads/founder-dr-mahadevaiah.svg" },
+  { name: "Smt. Sharada Bai", designation: "Founding Executive Member", photo: "/uploads/founder-sharada-bai.svg" },
+  { name: "Sri C. Puttaraju", designation: "Founding Executive Member", photo: "/uploads/founder-c-puttaraju.svg" },
+  { name: "Sri K. Boregowda", designation: "Founding Executive Member", photo: "/uploads/founder-k-boregowda.svg" },
+  { name: "Sri M. S. Ravikumar", designation: "Founding Executive Member", photo: "/uploads/founder-ms-ravikumar.svg" },
+];
+---
+
+<Layout
+  title="Founders Committee"
+  description="The founding committee of the Mysuru District Photographers and Videographers Association ® — the thirteen members who established the association in 2001."
+>
+  <Header />
+  <PageHero
+    eyebrow="Since 2001"
+    title="The founders committee"
+    description="Thirteen photographers and videographers who came together to register the association and give the district's image-makers a single professional voice."
+  />
+
+  <section class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
+    <div class="mx-auto max-w-[1100px]">
+      <div
+        class="grid gap-x-8 gap-y-12"
+        style="grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));"
+      >
+        {
+          founders.map((founder, i) => (
+            <figure class="m-0 flex flex-col items-center gap-3.5 text-center" data-reveal style={`--reveal-delay:${Math.min(i, 8) * 70}ms`}>
+              <div class="relative flex h-28 w-28 items-center justify-center rounded-full sm:h-32 sm:w-32">
+                <span class="absolute inset-0 rounded-full border-2 border-mdpva-gold" aria-hidden="true" />
+                <span class="absolute inset-[5px] rounded-full border border-mdpva-accent/70" aria-hidden="true" />
+                <img
+                  src={founder.photo}
+                  alt={`Portrait of ${founder.name}`}
+                  loading="lazy"
+                  class="absolute inset-[9px] h-[calc(100%-18px)] w-[calc(100%-18px)] rounded-full object-cover"
+                />
+              </div>
+              <figcaption>
+                <div class="font-serif text-[15px] leading-snug font-medium text-mdpva-ink">
+                  {founder.name}
+                </div>
+                <div class="mt-1 text-[11px] font-semibold tracking-[0.1em] text-mdpva-accent uppercase">
+                  {founder.designation}
+                </div>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mdpva-ink px-5 py-[clamp(48px,7vw,80px)] text-mdpva-cream sm:px-8 lg:px-16">
+    <div class="mx-auto flex max-w-[840px] flex-col items-center gap-5 text-center" data-reveal>
+      <h2 class="font-serif text-[clamp(24px,3vw,36px)] font-normal">
+        A quarter-century on, their vision continues
+      </h2>
+      <p class="max-w-[560px] text-[15px] leading-relaxed text-mdpva-cream/70">
+        The association they founded in 2001 is led today by an executive committee elected every
+        two years at the annual general meeting.
+      </p>
+      <a
+        href="/board"
+        class="rounded-sm border border-mdpva-cream/40 px-6 py-3 text-[13px] font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-white hover:text-mdpva-ink"
+      >
+        Meet the current board
+      </a>
+    </div>
+  </section>
+  <Footer />
+</Layout>

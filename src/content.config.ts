@@ -115,6 +115,12 @@ const board = defineCollection({
     order: z.number().int(),
     photo: z.string(),
     note: z.string().optional(),
+    // Display label, e.g. "2025-27" — purely cosmetic.
+    term: z.string(),
+    // Drives which term is "current": whichever members have the highest
+    // termStartYear are shown on /board automatically — no manual flag to
+    // remember when a new committee is added.
+    termStartYear: z.number().int(),
   }),
 });
 

@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  members: CollectionEntry<"board">[];
+}
+
+const { members } = Astro.props;
+const sorted = [...members].sort((a, b) => a.data.tier - b.data.tier || a.data.order - b.data.order);
+---
+
+<div class="mx-auto grid max-w-[980px] grid-cols-3 gap-x-5 gap-y-8 sm:grid-cols-7 sm:gap-x-6">
+  {
+    sorted.map((member, i) => (
+      <figure class="m-0 flex flex-col items-center gap-2.5 text-center" data-reveal style={`--reveal-delay:${Math.min(i, 13) * 45}ms`}>
+        <div class="relative flex h-16 w-16 items-center justify-center rounded-full sm:h-[72px] sm:w-[72px]">
+          <span class="absolute inset-0 rounded-full border-2 border-mdpva-gold" aria-hidden="true" />
+          <img
+            src={member.data.photo}
+            alt={`Portrait of ${member.data.name}`}
+            loading="lazy"
+            class="absolute inset-[6px] h-[calc(100%-12px)] w-[calc(100%-12px)] rounded-full object-cover"
+          />
+        </div>
+        <figcaption>
+          <div class="font-serif text-[13px] leading-snug font-medium text-mdpva-ink">{member.data.name}</div>
+          <div class="mt-0.5 text-[10px] font-semibold tracking-[0.08em] text-mdpva-accent uppercase">
+            {member.data.designation}
+          </div>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>

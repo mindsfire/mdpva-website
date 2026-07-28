@@ -4,4 +4,6 @@ designation: "Director"
 tier: 4
 order: 2
 photo: "/uploads/board-a-mohan.svg"
+term: "2025-27"
+termStartYear: 2025
 ---
