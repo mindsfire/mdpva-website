@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import PageHero from "../../components/PageHero.astro";
-import BoardCommitteeGrid from "../../components/BoardCommitteeGrid.astro";
+import CompactCommitteeGrid from "../../components/CompactCommitteeGrid.astro";
 import Footer from "../../components/Footer.astro";
 
 const allMembers = await getCollection("board");
@@ -58,7 +58,7 @@ const terms = years.map((year) => ({
           </div>
           <h2 class="font-serif text-[clamp(24px,2.8vw,34px)] font-normal">The {t.term} committee</h2>
         </div>
-        <BoardCommitteeGrid members={t.members} />
+        <CompactCommitteeGrid members={t.members} />
       </section>
     ))
   }
