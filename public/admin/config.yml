@@ -178,3 +178,9 @@ collections:
       - { label: "Order within tier", name: "order", widget: "number", value_type: "int" }
       - { label: "Photo", name: "photo", widget: "image" }
       - { label: "Note", name: "note", widget: "string", required: false, hint: "e.g. Former MLA, K.R. Constituency" }
+      - { label: "Term", name: "term", widget: "string", hint: "Display label, e.g. 2025-27" }
+      - label: "Term start year"
+        name: "termStartYear"
+        widget: "number"
+        value_type: "int"
+        hint: "The term with the highest start year is automatically shown as the current board on /board — no other flag needed. e.g. 2025"

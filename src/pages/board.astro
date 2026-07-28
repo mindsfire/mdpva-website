@@ -3,94 +3,103 @@ import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import PageHero from "../components/PageHero.astro";
+import BoardCommitteeGrid from "../components/BoardCommitteeGrid.astro";
 import Footer from "../components/Footer.astro";
 
-const members = (await getCollection("board")).sort(
-  (a, b) => a.data.tier - b.data.tier || a.data.order - b.data.order,
-);
+const allMembers = await getCollection("board");
 
-// Honorary President (tier 1) and President (tier 2) sit side by side as one
-// leadership row; Office Bearers (tier 3) and Directors (tier 4) follow.
-const leadership = members.filter((m) => m.data.tier === 1 || m.data.tier === 2);
-const groups = [
-  leadership,
-  members.filter((m) => m.data.tier === 3),
-  members.filter((m) => m.data.tier === 4),
-];
+// The term with the highest termStartYear is automatically "current" — no
+// manual flag to remember when the office adds a new committee in the CMS.
+const currentYear = Math.max(...allMembers.map((m) => m.data.termStartYear));
+const currentTermLabel = allMembers.find((m) => m.data.termStartYear === currentYear)!.data.term;
 
-// Portrait sizes shrink down the pyramid; the gold double-ring frame echoes
-// the association's printed invitation identity.
-const ringSize = ["h-40 w-40 sm:h-44 sm:w-44", "h-28 w-28 sm:h-32 sm:w-32", "h-24 w-24 sm:h-28 sm:w-28"];
-const groupLabels = ["", "Office Bearers", "Directors"];
-// Directors row is capped so it wraps 4-then-3 instead of a lopsided 5-then-2.
-const groupMaxWidth = ["", "", "max-w-[860px]"];
+const currentMembers = allMembers
+  .filter((m) => m.data.termStartYear === currentYear)
+  .sort((a, b) => a.data.tier - b.data.tier || a.data.order - b.data.order);
+
+// One representative card per past term for the archive slider — the
+// term's President (tier 2), falling back to its Honorary President.
+const pastTermYears = [...new Set(allMembers.map((m) => m.data.termStartYear))]
+  .filter((y) => y !== currentYear)
+  .sort((a, b) => b - a);
+
+const pastTerms = pastTermYears.map((year) => {
+  const termMembers = allMembers.filter((m) => m.data.termStartYear === year);
+  const representative =
+    termMembers.find((m) => m.data.tier === 2) ?? termMembers.find((m) => m.data.tier === 1) ?? termMembers[0];
+  return { year, term: representative.data.term, representative };
+});
 ---
 
 <Layout
   title="Board of Directors"
-  description="The executive committee of the Mysuru District Photographers and Videographers Association ® for the 2025–27 term — office bearers and directors."
+  description={`The executive committee of the Mysuru District Photographers and Videographers Association ® for the ${currentTermLabel} term — office bearers and directors.`}
 >
   <Header />
   <PageHero
-    eyebrow="Executive Committee · 2025–27"
+    eyebrow={`Executive Committee · ${currentTermLabel}`}
     title="Board of Directors"
-    description="The elected office bearers and directors who lead the association through the 2025–27 term."
+    description={`The elected office bearers and directors who lead the association through the ${currentTermLabel} term.`}
   />
 
   <section class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
-    <div class="mx-auto flex max-w-[1100px] flex-col items-center">
-      {
-        groups.map((group, ti) => (
-          <>
-            {ti > 0 && (
-              <div class="mdpva-connector h-10 w-px bg-mdpva-gold sm:h-14" aria-hidden="true" />
-            )}
-            {groupLabels[ti] && (
-              <div
-                class="mb-6 border-b border-mdpva-gold/50 pb-2 text-[11px] font-semibold tracking-[0.24em] text-mdpva-accent uppercase"
-                data-reveal
-              >
-                {groupLabels[ti]}
-              </div>
-            )}
-            <div class={`flex flex-wrap items-start justify-center gap-x-8 gap-y-10 sm:gap-x-12 ${groupMaxWidth[ti]}`}>
-              {group.map((member, mi) => (
-                <figure
-                  class="m-0 flex w-36 flex-col items-center gap-3.5 text-center sm:w-44"
-                  data-reveal
-                  style={`--reveal-delay:${mi * 110}ms`}
-                >
-                  <div
-                    class={`relative flex items-center justify-center rounded-full ${ringSize[ti]}`}
-                  >
-                    <span class="absolute inset-0 rounded-full border-2 border-mdpva-gold" aria-hidden="true" />
-                    <span class="absolute inset-[5px] rounded-full border border-mdpva-accent/70" aria-hidden="true" />
-                    <img
-                      src={member.data.photo}
-                      alt={`Portrait of ${member.data.name}`}
-                      loading={ti > 1 ? "lazy" : undefined}
-                      class="absolute inset-[9px] h-[calc(100%-18px)] w-[calc(100%-18px)] rounded-full object-cover"
-                    />
-                  </div>
-                  <figcaption>
-                    <div class="font-serif text-[16px] leading-snug font-medium text-mdpva-ink">
-                      {member.data.name}
-                    </div>
-                    <div class="mt-1 text-[12px] font-semibold tracking-[0.12em] text-mdpva-accent uppercase">
-                      {member.data.designation}
-                    </div>
-                    {member.data.note && (
-                      <div class="mt-1 text-[12px] text-mdpva-muted">{member.data.note}</div>
-                    )}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          </>
-        ))
-      }
-    </div>
+    <BoardCommitteeGrid members={currentMembers} />
   </section>
+
+  {
+    pastTerms.length > 0 && (
+      <section class="border-t border-mdpva-border bg-mdpva-white py-[clamp(48px,7vw,90px)]">
+        <div class="mx-auto mb-8 flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5 sm:px-8 lg:px-16" data-reveal>
+          <div>
+            <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">Since 2001</div>
+            <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">Past committees</h2>
+          </div>
+          <div class="flex gap-2" data-board-terms-nav>
+            <button
+              type="button"
+              data-scroll="prev"
+              aria-label="Scroll to previous terms"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-mdpva-border-soft text-mdpva-ink transition-colors hover:border-mdpva-ink disabled:pointer-events-none disabled:opacity-30"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              data-scroll="next"
+              aria-label="Scroll to next terms"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-mdpva-border-soft text-mdpva-ink transition-colors hover:border-mdpva-ink disabled:pointer-events-none disabled:opacity-30"
+            >
+              →
+            </button>
+          </div>
+        </div>
+        <div class="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16" data-reveal style="--reveal-delay:100ms">
+          <div class="mdpva-hscroll flex snap-x snap-mandatory gap-5 overflow-x-auto py-1 pb-3" style="scrollbar-width: none;">
+            {pastTerms.map((pt) => (
+              <a
+                href={`/board/${pt.term}`}
+                class="group flex flex-[0_0_200px] snap-start flex-col items-center gap-3.5 border border-mdpva-border-alt bg-mdpva-paper px-6 py-8 text-center transition-shadow duration-300 hover:shadow-lg"
+              >
+                <div class="relative flex h-20 w-20 items-center justify-center rounded-full">
+                  <span class="absolute inset-0 rounded-full border-2 border-mdpva-gold" aria-hidden="true" />
+                  <img
+                    src={pt.representative.data.photo}
+                    alt=""
+                    loading="lazy"
+                    class="absolute inset-[6px] h-[calc(100%-12px)] w-[calc(100%-12px)] rounded-full object-cover"
+                  />
+                </div>
+                <div class="font-serif text-lg font-medium text-mdpva-ink">{pt.term}</div>
+                <div class="text-[12px] tracking-[0.1em] text-mdpva-accent uppercase transition-colors group-hover:text-mdpva-accent-hover">
+                  View committee →
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <section class="bg-mdpva-ink px-5 py-[clamp(48px,7vw,80px)] text-mdpva-cream sm:px-8 lg:px-16">
     <div class="mx-auto flex max-w-[840px] flex-col items-center gap-5 text-center" data-reveal>
@@ -111,3 +120,31 @@ const groupMaxWidth = ["", "", "max-w-[860px]"];
   </section>
   <Footer />
 </Layout>
+
+<script>
+  const strip = document.querySelector<HTMLElement>(".mdpva-hscroll");
+  const prevBtn = document.querySelector<HTMLButtonElement>('[data-board-terms-nav] [data-scroll="prev"]');
+  const nextBtn = document.querySelector<HTMLButtonElement>('[data-board-terms-nav] [data-scroll="next"]');
+
+  if (strip && prevBtn && nextBtn) {
+    const step = () => strip.querySelector("a")?.clientWidth ?? strip.clientWidth * 0.8;
+
+    const updateButtons = () => {
+      const maxScroll = strip.scrollWidth - strip.clientWidth;
+      prevBtn.disabled = strip.scrollLeft <= 4;
+      nextBtn.disabled = strip.scrollLeft >= maxScroll - 4;
+    };
+
+    prevBtn.addEventListener("click", () => {
+      strip.scrollBy({ left: -(step() + 20), behavior: "instant" });
+    });
+
+    nextBtn.addEventListener("click", () => {
+      strip.scrollBy({ left: step() + 20, behavior: "instant" });
+    });
+
+    strip.addEventListener("scroll", updateButtons, { passive: true });
+    window.addEventListener("resize", updateButtons);
+    updateButtons();
+  }
+</script>
