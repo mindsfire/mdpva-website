@@ -7,6 +7,6 @@ photo: "/uploads/board-mk-somashekar.svg"
 note: "Former MLA, K.R. Constituency"
 term: "2025-27"
 termStartYear: 2025
-homeMessage: "In twenty-five years, we have gone from a handful of studio photographers meeting over tea to a district-wide association of over 1,550 professionals. Every camera behind a wedding, a festival, a family's first portrait — that is our members' quiet work, and it is the reason this association exists."
+homeMessage: "In twenty-five years, we have grown from a handful of studio photographers meeting over tea, into a district-wide association of over fifteen hundred professionals, each one behind a lens somewhere in this district today."
 cutoutPhoto: "/uploads/board-mk-somashekar-cutout.svg"
 ---

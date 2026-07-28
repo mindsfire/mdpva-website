@@ -11,19 +11,19 @@ const notes = allMembers
 
 {
   notes.length > 0 && (
-    <section class="relative overflow-hidden border-t border-mdpva-border bg-mdpva-paper px-5 py-[clamp(64px,10vw,130px)] sm:px-8 lg:px-16">
+    <section class="relative overflow-hidden border-t border-mdpva-border bg-mdpva-paper px-5 py-[clamp(36px,5vw,64px)] sm:px-8 lg:px-16">
       <div class="mx-auto max-w-[1100px]">
-        <div class="mb-12 text-center" data-reveal>
+        <div class="mb-8 text-center" data-reveal>
           <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
             A Note From Leadership
           </div>
           <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">In their own words</h2>
         </div>
 
-        <div class="relative grid min-h-[420px] items-center gap-10" style="grid-template-columns: 1fr;" data-notes-root>
+        <div class="relative grid items-end gap-10" style="grid-template-columns: 1fr;" data-notes-root>
           {notes.map((member, i) => (
             <div
-              class="col-start-1 row-start-1 grid items-center gap-10 transition-opacity duration-[1200ms] ease-in-out sm:grid-cols-[1.3fr_1fr]"
+              class="col-start-1 row-start-1 grid items-end gap-10 transition-opacity duration-[1200ms] ease-in-out sm:grid-cols-[1.3fr_1fr]"
               data-note
               data-index={i}
               style={i === 0 ? "" : "opacity:0; pointer-events:none;"}
@@ -43,10 +43,10 @@ const notes = allMembers
                     fill="currentColor"
                   />
                 </svg>
-                <p class="text-pretty font-handwriting text-[clamp(24px,2.6vw,32px)] leading-[1.35] text-mdpva-ink">
+                <p class="text-pretty flex min-h-[clamp(110px,14vw,140px)] items-start font-handwriting text-[clamp(18px,1.7vw,21px)] leading-[1.4] text-mdpva-ink">
                   {member.data.homeMessage}
                 </p>
-                <div class="mt-6 flex items-center gap-3">
+                <div class="mt-4 flex items-center gap-3">
                   <span class="h-px w-10 bg-mdpva-gold" aria-hidden="true" />
                   <div>
                     <div class="font-serif text-[16px] font-medium text-mdpva-ink">{member.data.name}</div>
@@ -57,7 +57,7 @@ const notes = allMembers
                 </div>
               </div>
 
-              <div class="relative mx-auto flex h-[280px] w-[220px] items-end justify-center sm:h-[340px] sm:w-[260px]">
+              <div class="relative mx-auto flex h-[260px] w-[210px] items-end justify-center sm:h-[320px] sm:w-[250px]">
                 <div
                   class="absolute bottom-2 left-1/2 h-8 w-[70%] -translate-x-1/2 rounded-[50%] bg-mdpva-ink/25 blur-xl"
                   aria-hidden="true"
@@ -74,7 +74,7 @@ const notes = allMembers
         </div>
 
         {notes.length > 1 && (
-          <div class="mt-10 flex justify-center gap-2" data-notes-dots role="tablist" aria-label="Leadership notes">
+          <div class="mt-8 flex justify-center gap-2" data-notes-dots role="tablist" aria-label="Leadership notes">
             {notes.map((_, i) => (
               <button
                 type="button"
