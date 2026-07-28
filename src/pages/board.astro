@@ -17,18 +17,16 @@ const currentMembers = allMembers
   .filter((m) => m.data.termStartYear === currentYear)
   .sort((a, b) => a.data.tier - b.data.tier || a.data.order - b.data.order);
 
-// One representative card per past term for the archive slider — the
-// term's President (tier 2), falling back to its Honorary President.
+// One card per past term for the archive slider — a generated square year
+// tile, not a person's photo, so it reads distinctly from member portraits.
 const pastTermYears = [...new Set(allMembers.map((m) => m.data.termStartYear))]
   .filter((y) => y !== currentYear)
   .sort((a, b) => b - a);
 
-const pastTerms = pastTermYears.map((year) => {
-  const termMembers = allMembers.filter((m) => m.data.termStartYear === year);
-  const representative =
-    termMembers.find((m) => m.data.tier === 2) ?? termMembers.find((m) => m.data.tier === 1) ?? termMembers[0];
-  return { year, term: representative.data.term, representative };
-});
+const pastTerms = pastTermYears.map((year) => ({
+  year,
+  term: allMembers.find((m) => m.data.termStartYear === year)!.data.term,
+}));
 ---
 
 <Layout
@@ -80,14 +78,10 @@ const pastTerms = pastTermYears.map((year) => {
                 href={`/board/archive#${pt.term}`}
                 class="group flex flex-[0_0_200px] snap-start flex-col items-center gap-3.5 border border-mdpva-border-alt bg-mdpva-paper px-6 py-8 text-center transition-shadow duration-300 hover:shadow-lg"
               >
-                <div class="relative flex h-20 w-20 items-center justify-center rounded-full">
-                  <span class="absolute inset-0 rounded-full border-2 border-mdpva-gold" aria-hidden="true" />
-                  <img
-                    src={pt.representative.data.photo}
-                    alt=""
-                    loading="lazy"
-                    class="absolute inset-[6px] h-[calc(100%-12px)] w-[calc(100%-12px)] rounded-full object-cover"
-                  />
+                <div class="flex h-20 w-20 flex-col items-center justify-center gap-1 rounded-lg border-2 border-mdpva-gold bg-mdpva-ink text-mdpva-cream transition-colors group-hover:bg-mdpva-accent">
+                  <span class="font-serif text-2xl leading-none font-semibold">{String(pt.year).slice(-2)}</span>
+                  <span class="h-px w-6 bg-mdpva-cream/30" aria-hidden="true" />
+                  <span class="text-[10px] tracking-wide text-mdpva-cream/70">{pt.term}</span>
                 </div>
                 <div class="font-serif text-lg font-medium text-mdpva-ink">{pt.term}</div>
                 <div class="text-[12px] tracking-[0.1em] text-mdpva-accent uppercase transition-colors group-hover:text-mdpva-accent-hover">
