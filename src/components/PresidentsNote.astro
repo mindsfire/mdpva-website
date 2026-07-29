@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 
 const allMembers = await getCollection("board");
@@ -15,7 +20,7 @@ const notes = allMembers
       <div class="mx-auto max-w-[1100px]">
         <div class="mb-8 text-center" data-reveal>
           <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-            A Note From Leadership
+            {t("home.note.eyebrow")}
           </div>
           <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">In their own words</h2>
         </div>

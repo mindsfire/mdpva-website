@@ -1,12 +1,17 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getEntry } from "astro:content";
 
 const about = await getEntry("pages", "about");
 const stats = [
-  { value: "1,550+", label: "Active members", target: 1550, suffix: "+" },
-  { value: "2001", label: "Established" },
-  { value: "40+", label: "Workshops a year", target: 40, suffix: "+" },
-  { value: "7", label: "Taluk chapters", target: 7, suffix: "" },
+  { value: "1,550+", label: t("home.stats.members"), target: 1550, suffix: "+" },
+  { value: "2001", label: t("home.stats.established") },
+  { value: "40+", label: t("home.stats.workshops"), target: 40, suffix: "+" },
+  { value: "7", label: t("home.stats.taluks"), target: 7, suffix: "" },
 ];
 ---
 
@@ -17,10 +22,10 @@ const stats = [
   >
     <div data-reveal>
       <div class="mb-4.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-        About the Association
+        {t("home.mission.eyebrow")}
       </div>
       <h2 class="text-pretty mb-5 font-serif text-[clamp(26px,3.2vw,40px)] leading-tight font-normal">
-        A guild of working professionals, rooted in the cultural capital of Karnataka.
+        {t("home.mission.heading")}
       </h2>
       <p class="max-w-[560px] text-base leading-relaxed text-mdpva-body">
         {about?.body}

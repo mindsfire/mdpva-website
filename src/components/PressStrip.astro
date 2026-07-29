@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 
 const items = (await getCollection("press"))
@@ -13,12 +18,12 @@ const dateFmt = new Intl.DateTimeFormat("en-IN", { day: "2-digit", month: "short
     <div class="mb-8 flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
         <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-          In the Media
+          {t("home.press.eyebrow")}
         </div>
-        <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">MDPVA in the news</h2>
+        <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">{t("home.press.heading")}</h2>
       </div>
-      <a href="/press" class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
-        All press coverage →
+      <a href={L("/press")} class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
+        {t("home.press.all")}
       </a>
     </div>
     <div

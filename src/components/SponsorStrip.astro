@@ -1,20 +1,25 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 
 const now = new Date();
 const sponsors = (await getCollection("sponsors")).filter((s) => s.data.endDate >= now);
 
 const tiers = [
-  { key: "platinum", label: "Platinum", size: "h-22 w-55" },
-  { key: "gold", label: "Gold", size: "h-17 w-42" },
-  { key: "silver", label: "Silver", size: "h-13 w-32" },
+  { key: "platinum", label: t("sponsors.platinum"), size: "h-22 w-55" },
+  { key: "gold", label: t("sponsors.gold"), size: "h-17 w-42" },
+  { key: "silver", label: t("sponsors.silver"), size: "h-13 w-32" },
 ] as const;
 ---
 
 <section class="border-t border-mdpva-border bg-mdpva-white px-5 py-[clamp(48px,7vw,88px)] sm:px-8 lg:px-16">
   <div class="mx-auto max-w-[1200px]" data-reveal>
     <div class="mb-10 text-center text-xs font-semibold tracking-[0.22em] text-mdpva-muted uppercase">
-      Our Sponsors &amp; Partners
+      {t("home.sponsors.heading")}
     </div>
     <div class="flex flex-col gap-8">
       {

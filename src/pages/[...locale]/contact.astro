@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import PageHero from "../../components/PageHero.astro";
@@ -10,14 +15,14 @@ export function getStaticPaths() {
 ---
 
 <Layout
-  title="Contact"
-  description="Contact the Mysuru District Photographers and Videographers Association ® — registered office at #224, Narayana Shastri Road, K.R. Mohalla, Mysuru."
+  title={t("contact.meta.title")}
+  description={t("contact.meta.description")}
 >
   <Header />
   <PageHero
-    eyebrow="Contact"
-    title="Get in touch"
-    description="Membership applications, event enquiries, and press — write to us or visit the association office."
+    eyebrow={t("contact.hero.eyebrow")}
+    title={t("contact.hero.title")}
+    description={t("contact.hero.description")}
   />
   <section class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
     <div
@@ -25,15 +30,11 @@ export function getStaticPaths() {
       style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));"
     >
       <div data-reveal>
-        <h2 class="mb-3.5 font-serif text-[22px] font-medium">Registered office</h2>
-        <p class="text-[15px] leading-relaxed text-mdpva-body">
-          #224, Narayana Shastri Road,<br />
-          next to Mahalakshmi Temple,<br />
-          K.R. Mohalla, Mysuru – 570024
-        </p>
+        <h2 class="mb-3.5 font-serif text-[22px] font-medium">{t("contact.office.heading")}</h2>
+        <p class="text-[15px] leading-relaxed text-mdpva-body" set:html={t("footer.address")} />
       </div>
       <div data-reveal style="--reveal-delay:100ms">
-        <h2 class="mb-3.5 font-serif text-[22px] font-medium">Write or call</h2>
+        <h2 class="mb-3.5 font-serif text-[22px] font-medium">{t("contact.write.heading")}</h2>
         <p class="flex flex-col gap-2 text-[15px] leading-relaxed">
           <a href="mailto:office@mdpva.in">office@mdpva.in</a>
           <a href="tel:+918212400000">+91 821 240 0000</a>

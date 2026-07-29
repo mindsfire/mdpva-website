@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 
 interface Props {
@@ -23,10 +28,10 @@ const cardBg = theme === "accent" ? "bg-mdpva-white/8" : "bg-mdpva-cream/4";
 <section class={`${sectionBg} overflow-hidden px-0 py-[clamp(56px,9vw,100px)] text-mdpva-cream`}>
   <div class="mx-auto mb-10 max-w-[1200px] px-5 sm:px-8 lg:px-16" data-reveal>
     <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-cream/72 uppercase">
-      Member Voices
+      {t("home.testimonials.eyebrow")}
     </div>
     <h2 class="text-pretty max-w-[640px] font-serif text-[clamp(26px,3.2vw,40px)] font-normal">
-      What our members say
+      {t("home.testimonials.heading")}
     </h2>
   </div>
 

@@ -1,24 +1,29 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 const benefits = [
   {
     number: "01",
-    title: "Certification",
-    body: "Association-issued professional ID and skill certification recognised by venues, government bodies, and clients across the district.",
+    title: t("benefits.1.title"),
+    body: t("benefits.1.body"),
   },
   {
     number: "02",
-    title: "Recognition & Network",
-    body: "A verified place in the district's professional community — referrals, second-shooter calls, and standing with venues and authorities.",
+    title: t("benefits.2.title"),
+    body: t("benefits.2.body"),
   },
   {
     number: "03",
-    title: "Events & Workshops",
-    body: "Masterclasses, equipment demos, photo walks, and the annual district salon — free or discounted for members.",
+    title: t("benefits.3.title"),
+    body: t("benefits.3.body"),
   },
   {
     number: "04",
-    title: "Job Board",
-    body: "Members-only access to assignment leads — weddings, events, commercial shoots, and second-shooter calls.",
+    title: t("benefits.4.title"),
+    body: t("benefits.4.body"),
   },
 ];
 ---
@@ -26,10 +31,10 @@ const benefits = [
 <section id="membership" class="bg-mdpva-ink px-5 py-[clamp(56px,9vw,110px)] text-mdpva-cream sm:px-8 lg:px-16">
   <div class="mx-auto max-w-[1200px]">
     <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-gold uppercase" data-reveal>
-      Membership Benefits
+      {t("benefits.eyebrow")}
     </div>
     <h2 class="text-pretty mb-11 max-w-[640px] font-serif text-[clamp(26px,3.2vw,40px)] font-normal" data-reveal style="--reveal-delay:80ms">
-      What 1,550 professionals get from standing together.
+      {t("benefits.heading")}
     </h2>
     <div
       class="grid gap-0 border border-mdpva-border-dark"
@@ -48,10 +53,10 @@ const benefits = [
     </div>
     <div class="mt-9" data-reveal>
       <a
-        href="/membership#apply"
+        href={`${L("/membership")}#apply`}
         class="inline-block rounded-sm bg-mdpva-accent px-7 py-3.5 text-sm font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-mdpva-accent-hover"
       >
-        How to join
+        {t("benefits.cta")}
       </a>
     </div>
   </div>

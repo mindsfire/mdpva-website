@@ -1,15 +1,20 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 
 const items = (await getCollection("gallery")).sort((a, b) => b.data.year - a.data.year);
 
 const categories = ["all", "helping-hands", "hospital-care", "tributes", "workshops"] as const;
 const categoryLabels: Record<(typeof categories)[number], string> = {
-  all: "All",
-  "helping-hands": "Helping Hands",
-  "hospital-care": "Hospital Care",
-  tributes: "Tributes",
-  workshops: "Workshops",
+  all: t("gallery.filter.all"),
+  "helping-hands": t("gallery.filter.helpingHands"),
+  "hospital-care": t("gallery.filter.hospitalCare"),
+  tributes: t("gallery.filter.tributes"),
+  workshops: t("gallery.filter.workshops"),
 };
 ---
 
@@ -18,9 +23,9 @@ const categoryLabels: Record<(typeof categories)[number], string> = {
     <div class="mb-8 flex flex-wrap items-end justify-between gap-6" data-reveal>
       <div>
         <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-          Beyond the Lens
+          {t("home.gallery.eyebrow")}
         </div>
-        <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">The association at work</h2>
+        <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">{t("home.gallery.heading")}</h2>
       </div>
       <div class="flex flex-wrap gap-2" data-gallery-filters>
         {

@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 
 const today = new Date();
@@ -17,13 +22,13 @@ const dayFmt = new Intl.DateTimeFormat("en-US", { day: "2-digit" });
   <div class="mx-auto mb-8 flex max-w-[1200px] flex-wrap items-end justify-between gap-6 px-5 sm:px-8 lg:px-16" data-reveal>
     <div>
       <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-        Upcoming Events
+        {t("home.events.heading")}
       </div>
-      <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">On the calendar</h2>
+      <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">{t("home.events.subheading")}</h2>
     </div>
     <div class="flex items-center gap-5">
-      <a href="/events" class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
-        All events →
+      <a href={L("/events")} class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
+        {t("home.events.all")}
       </a>
       {
         events.length > 0 && (
@@ -31,7 +36,7 @@ const dayFmt = new Intl.DateTimeFormat("en-US", { day: "2-digit" });
             <button
               type="button"
               data-scroll="prev"
-              aria-label="Scroll to previous events"
+              aria-label={t("a11y.prevEvents")}
               class="flex h-10 w-10 items-center justify-center rounded-full border border-mdpva-border-soft text-mdpva-ink transition-colors hover:border-mdpva-ink disabled:pointer-events-none disabled:opacity-30"
             >
               ←
@@ -39,7 +44,7 @@ const dayFmt = new Intl.DateTimeFormat("en-US", { day: "2-digit" });
             <button
               type="button"
               data-scroll="next"
-              aria-label="Scroll to next events"
+              aria-label={t("a11y.nextEvents")}
               class="flex h-10 w-10 items-center justify-center rounded-full border border-mdpva-border-soft text-mdpva-ink transition-colors hover:border-mdpva-ink disabled:pointer-events-none disabled:opacity-30"
             >
               →
@@ -54,13 +59,13 @@ const dayFmt = new Intl.DateTimeFormat("en-US", { day: "2-digit" });
       <div class="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-16" data-reveal style="--reveal-delay:100ms">
         <div class="border border-dashed border-mdpva-border-soft bg-mdpva-white px-6 py-12 text-center">
           <p class="text-[15px] text-mdpva-body">
-            Nothing on the calendar right now — check back soon, or browse what the association has run before.
+            {t("home.events.empty")}
           </p>
           <a
-            href="/events"
+            href={L("/events")}
             class="mt-4 inline-block border-b border-current pb-0.5 text-sm font-semibold tracking-wide text-mdpva-accent"
           >
-            See past events →
+            {t("home.events.past")}
           </a>
         </div>
       </div>

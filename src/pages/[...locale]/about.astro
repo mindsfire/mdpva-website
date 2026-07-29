@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
@@ -13,28 +18,28 @@ export function getStaticPaths() {
 const milestones = [
   {
     year: "2001",
-    title: "The association is founded",
-    body: "A group of Mysuru's studio photographers and wedding videographers register the association, giving the district's image-makers a single professional voice.",
+    title: t("about.m1.title"),
+    body: t("about.m1.body"),
   },
   {
     year: "2005",
-    title: "First district photography salon",
-    body: "The first juried exhibition of member work opens at Jaganmohan Palace Art Gallery — now an annual fixture of the city's cultural calendar.",
+    title: t("about.m2.title"),
+    body: t("about.m2.body"),
   },
   {
     year: "2012",
-    title: "Official Dasara coverage",
-    body: "MDPVA members are engaged for official coverage of the Mysuru Dasara festivities — a recognition the association has held ever since.",
+    title: t("about.m3.title"),
+    body: t("about.m3.body"),
   },
   {
     year: "2018",
-    title: "Training & certification wing",
-    body: "The association formalises its workshop programme: masterclasses, drone compliance training, and a certification recognised across the district.",
+    title: t("about.m4.title"),
+    body: t("about.m4.body"),
   },
   {
     year: "2025",
-    title: "186th World Photography Day & new committee",
-    body: "The association celebrates World Photography Day at the Institution of Engineers and swears in the 2025–27 executive committee.",
+    title: t("about.m5.title"),
+    body: t("about.m5.body"),
   },
 ];
 
@@ -55,18 +60,18 @@ const foundersPreview = [
 ---
 
 <Layout
-  title="About"
-  description="The legacy of the Mysuru District Photographers and Videographers Association ® — a registered professional body uniting the district's photographers and videographers since 2001."
+  title={t("about.meta.title")}
+  description={t("about.meta.description")}
 >
   <Header />
 
   <section class="relative overflow-hidden bg-mdpva-ink px-5 pt-32 pb-20 text-mdpva-cream sm:px-8 lg:px-16 lg:pt-44 lg:pb-28">
     <div class="mx-auto max-w-[1200px]" data-reveal>
       <div class="mb-5 text-xs font-semibold tracking-[0.22em] text-mdpva-gold uppercase">
-        About the Association · Since 2001
+        {t("about.hero.eyebrow")}
       </div>
       <h1 class="text-pretty max-w-[860px] font-serif text-[clamp(34px,4.8vw,62px)] leading-tight font-normal">
-        A quarter-century behind the lens of Mysuru district
+        {t("about.hero.title")}
       </h1>
       <p class="mt-6 max-w-[640px] text-[16px] leading-relaxed text-mdpva-cream/75">
         The Mysuru District Photographers and Videographers Association ® is the registered
@@ -95,7 +100,7 @@ const foundersPreview = [
     <div class="mx-auto max-w-[900px]">
       <div class="mb-14 text-center" data-reveal>
         <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-          Our Legacy
+          {t("about.legacy.heading")}
         </div>
         <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">The journey since 2001</h2>
       </div>
@@ -172,8 +177,8 @@ const foundersPreview = [
             ))
           }
         </div>
-        <a href="/founders" class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
-          Meet the founders committee →
+        <a href={L("/founders")} class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
+          {t("about.founders.cta")}
         </a>
       </div>
     </div>
@@ -186,7 +191,7 @@ const foundersPreview = [
     >
       <div data-reveal>
         <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-          Registered Office
+          {t("about.office.heading")}
         </div>
         <h2 class="mb-4 font-serif text-[clamp(24px,2.8vw,34px)] font-normal">Where to find us</h2>
         <p class="text-[15px] leading-relaxed text-mdpva-body">
@@ -195,15 +200,15 @@ const foundersPreview = [
           K.R. Mohalla, Mysuru – 570024
         </p>
         <p class="mt-4 text-[14px] text-mdpva-muted">
-          A registered association under the Karnataka Societies Registration Act.
+          {t("about.office.note")}
         </p>
       </div>
       <div data-reveal style="--reveal-delay:120ms">
         <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-          Leadership
+          {t("about.leadership.heading")}
         </div>
         <h2 class="mb-4 font-serif text-[clamp(24px,2.8vw,34px)] font-normal">
-          The 2025–27 executive committee
+          {t("about.leadership.term")}
         </h2>
         <div class="mb-5 flex">
           {
@@ -220,8 +225,8 @@ const foundersPreview = [
             +9
           </span>
         </div>
-        <a href="/board" class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
-          Meet the full board →
+        <a href={L("/board")} class="border-b border-current pb-0.5 text-sm font-semibold tracking-wide">
+          {t("about.board.cta")}
         </a>
       </div>
     </div>

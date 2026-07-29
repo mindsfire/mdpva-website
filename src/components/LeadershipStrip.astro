@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 
 const allMembers = await getCollection("board");
@@ -33,14 +38,13 @@ const initials = (name: string) =>
   >
     <div data-reveal>
       <div class="mb-4.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-        Executive Committee · {currentTermLabel}
+        {t("home.leadership.eyebrow")} · {currentTermLabel}
       </div>
       <h2 class="text-pretty mb-5 font-serif text-[clamp(26px,3.2vw,40px)] leading-tight font-normal">
-        Led by working professionals, elected by the members.
+        {t("home.leadership.heading")}
       </h2>
       <p class="max-w-[560px] text-base leading-relaxed text-mdpva-body">
-        Every two years the general body elects the office bearers and directors who steer
-        the association — its workshops, welfare fund, and district chapters.
+        {t("home.leadership.body")}
       </p>
       <div class="mt-8 flex flex-wrap items-center gap-5">
         <a

@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath } from "../../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import PageHero from "../../components/PageHero.astro";
@@ -14,35 +19,35 @@ export function getStaticPaths() {
 // published, so nothing here may imply that some members receive more than
 // others. Copy salvaged from the retired membership-plans collection.
 const includes = [
-  "MDPVA professional ID and certification",
-  "All workshops, photo walks, and the district salon",
-  "Members-only job board and second-shooter calls",
-  "Priority for official coverage pools (Dasara & district events)",
-  "Dispute support with venues and authorities",
-  "Voting rights at the AGM",
+  t("membership.includes.1"),
+  t("membership.includes.2"),
+  t("membership.includes.3"),
+  t("membership.includes.4"),
+  t("membership.includes.5"),
+  t("membership.includes.6"),
 ];
 
 const coverage = [
   {
-    title: "Who can join",
-    body: "Working photographers and videographers based in Mysuru district — studios, freelancers, cinematographers, and drone operators. Students and apprentices are welcome too.",
+    title: t("membership.who.title"),
+    body: t("membership.who.body"),
   },
   {
-    title: "What membership covers",
-    body: "Association ID and certification, all workshops and photo walks, the members-only job board, dispute support with venues and authorities, and voting rights at the AGM.",
+    title: t("membership.covers.title"),
+    body: t("membership.covers.body"),
   },
 ];
 ---
 
 <Layout
-  title="Membership"
-  description="Join the Mysuru District Photographers and Videographers Association ® — what membership includes, who can join, and how to apply. Certification, workshops, and referrals for the district's professionals."
+  title={t("membership.meta.title")}
+  description={t("membership.meta.description")}
 >
   <Header />
   <PageHero
-    eyebrow="Membership"
-    title="Stand with the district's professionals"
-    description="Certification, workshops, referrals, and a professional community behind you — recognised across Mysuru district since 2001."
+    eyebrow={t("membership.hero.eyebrow")}
+    title={t("membership.hero.title")}
+    description={t("membership.hero.description")}
   />
 
   <section
@@ -52,10 +57,10 @@ const coverage = [
     <div class="mx-auto grid max-w-[1100px] items-start gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
       <div data-reveal>
         <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
-          What membership includes
+          {t("membership.includes.eyebrow")}
         </div>
         <h2 class="text-pretty mb-8 max-w-[520px] font-serif text-[clamp(24px,3vw,34px)] font-normal">
-          Everything the association puts behind its members.
+          {t("membership.includes.heading")}
         </h2>
         <ul class="m-0 flex list-none flex-col gap-4 p-0">
           {
@@ -126,25 +131,24 @@ const coverage = [
           />
         </svg>
 
-        <h2 class="font-serif text-[26px] font-medium">Become a member</h2>
+        <h2 class="font-serif text-[26px] font-medium">{t("membership.apply.heading")}</h2>
         <p class="mt-4 text-sm leading-relaxed text-mdpva-cream/70">
-          Applications are verified by the executive committee. Visit the association office
-          with two photographs, ID proof, and proof of professional work.
+          {t("membership.apply.body")}
         </p>
         <a
-          href="/contact"
+          href={L("/contact")}
           class="mt-7 block rounded-sm bg-mdpva-accent px-6 py-3.5 text-center text-[13px] font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-mdpva-accent-hover"
         >
-          Apply now
+          {t("membership.apply.cta")}
         </a>
         <p class="mt-4 text-center text-[13px] text-mdpva-cream/60">
-          or write to{" "}
+          {t("membership.apply.or")}{" "}
           <a href="mailto:office@mdpva.in" class="text-mdpva-gold transition-colors hover:text-mdpva-cream">
             office@mdpva.in
           </a>
         </p>
         <p class="mt-7 border-t border-mdpva-border-dark pt-5 text-[13px] leading-relaxed text-mdpva-cream/50">
-          Membership fees are confirmed by the association office.
+          {t("membership.apply.fees")}
         </p>
       </div>
     </div>
