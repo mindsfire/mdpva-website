@@ -91,7 +91,7 @@ const dayFmt = new Intl.DateTimeFormat("en-US", { day: "2-digit" });
                 </div>
                 <div class="flex flex-1 flex-col gap-2.5 px-6 pt-4.5 pb-6">
                   <div class="text-[11px] font-semibold tracking-[0.14em] text-mdpva-accent uppercase">
-                    {event.data.isFeatured ? "Featured" : "Event"}
+                    {event.data.isFeatured ? t("events.badge.featured") : t("events.badge.event")}
                   </div>
                   <h3 class="text-pretty font-serif text-[21px] leading-tight font-medium">
                     {event.data.title}

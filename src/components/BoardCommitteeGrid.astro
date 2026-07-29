@@ -1,4 +1,8 @@
 ---
+import { getLocale, useTranslations, pickKn } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -57,9 +61,9 @@ const groupMaxWidth = ["", "", "max-w-[860px]"];
               <figcaption>
                 <div class="font-serif text-[16px] leading-snug font-medium text-mdpva-ink">{member.data.name}</div>
                 <div class="mt-1 text-[12px] font-semibold tracking-[0.12em] text-mdpva-accent uppercase">
-                  {member.data.designation}
+                  {t(`designation.${member.data.designation}` as any)}
                 </div>
-                {member.data.note && <div class="mt-1 text-[12px] text-mdpva-muted">{member.data.note}</div>}
+                {member.data.note && <div class="mt-1 text-[12px] text-mdpva-muted">{pickKn(member.data, "note", locale)}</div>}
               </figcaption>
             </figure>
           ))}

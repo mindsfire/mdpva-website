@@ -1,4 +1,9 @@
 ---
+import { getLocale, useTranslations, localizePath, pickKn } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
 import { getCollection } from "astro:content";
 
 const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order - b.data.order);
@@ -45,12 +50,12 @@ const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order -
               style={i === 0 ? "" : "opacity:0; pointer-events:none;"}
               aria-hidden={i === 0 ? "false" : "true"}
             >
-              <div class="text-xs font-semibold tracking-[0.22em] text-mdpva-gold uppercase">{slide.data.eyebrow}</div>
+              <div class="text-xs font-semibold tracking-[0.22em] text-mdpva-gold uppercase">{pickKn(slide.data, "eyebrow", locale)}</div>
               <h1 class="text-pretty font-serif text-[clamp(34px,3.4vw,58px)] leading-[1.08] font-normal text-mdpva-cream 2xl:text-[clamp(58px,3.4vw,72px)]">
-                {slide.data.headline}
+                {pickKn(slide.data, "headline", locale)}
               </h1>
               <p class="max-w-[480px] text-[clamp(14px,1.4vw,16px)] leading-relaxed text-mdpva-cream/80">
-                {slide.data.description}
+                {pickKn(slide.data, "description", locale)}
               </p>
             </div>
           ))
@@ -58,16 +63,16 @@ const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order -
       </div>
       <div class="mt-6 flex w-full flex-nowrap justify-center gap-2.5 lg:gap-3">
         <a
-          href="/membership#apply"
+          href={`${L("/membership")}#apply`}
           class="flex-1 rounded-sm bg-mdpva-accent px-4 py-3 text-center text-[12px] font-semibold tracking-wider text-mdpva-cream uppercase whitespace-nowrap transition-colors hover:bg-mdpva-accent-hover lg:flex-none lg:px-6 lg:text-[13px]"
         >
-          Become a Member
+          {t("hero.cta.member")}
         </a>
         <a
-          href="/gallery#gallery"
+          href={`${L("/gallery")}#gallery`}
           class="flex-1 rounded-sm border border-mdpva-cream/50 px-4 py-3 text-center text-[12px] font-semibold tracking-wider text-mdpva-cream uppercase whitespace-nowrap transition-colors hover:bg-white/10 lg:flex-none lg:px-6 lg:text-[13px]"
         >
-          Explore Gallery
+          {t("hero.cta.gallery")}
         </a>
       </div>
     </div>
@@ -92,7 +97,7 @@ const slides = (await getCollection("heroSlides")).sort((a, b) => a.data.order -
               data-index={i}
               role="tab"
               aria-selected={i === 0 ? "true" : "false"}
-              aria-label={`Show slide ${i + 1}: ${slide.data.eyebrow}`}
+              aria-label={`Show slide ${i + 1}: ${pickKn(slide.data, "eyebrow", locale)}`}
               class="relative h-2 w-2 overflow-hidden rounded-full bg-mdpva-cream/40 transition-all data-[active=true]:w-7"
               data-active={i === 0}
             >

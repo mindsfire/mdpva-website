@@ -1,5 +1,5 @@
 ---
-import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+import { getLocale, useTranslations, localizePath, pickKn } from "../i18n/utils";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -48,10 +48,10 @@ const initials = (name: string) =>
       </p>
       <div class="mt-8 flex flex-wrap items-center gap-5">
         <a
-          href="/board"
+          href={L("/board")}
           class="rounded-sm bg-mdpva-accent px-6 py-3 text-[13px] font-semibold tracking-wider text-white uppercase transition-colors hover:bg-mdpva-accent-hover"
         >
-          Meet the full board
+          {t("home.leadership.cta")}
         </a>
         <div class="flex items-center gap-2.5">
           <div class="flex -space-x-2.5" aria-hidden="true">
@@ -63,7 +63,7 @@ const initials = (name: string) =>
               ))
             }
           </div>
-          <span class="text-[13px] text-mdpva-muted">+{rest.length} office bearers &amp; directors</span>
+          <span class="text-[13px] text-mdpva-muted">+{rest.length} {t("home.leadership.more")}</span>
         </div>
       </div>
     </div>
@@ -90,10 +90,10 @@ const initials = (name: string) =>
                 {member.data.name}
               </div>
               <div class="mt-1 text-[12px] font-semibold tracking-[0.12em] text-mdpva-accent uppercase">
-                {member.data.designation}
+                {t(`designation.${member.data.designation}` as any)}
               </div>
               {member.data.note && (
-                <div class="mt-1 text-[12px] text-mdpva-muted">{member.data.note}</div>
+                <div class="mt-1 text-[12px] text-mdpva-muted">{pickKn(member.data, "note", locale)}</div>
               )}
             </figcaption>
           </figure>

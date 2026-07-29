@@ -67,3 +67,19 @@ export function alternates(pathname: string) {
     path: alternatePath(pathname, locale),
   }));
 }
+
+/**
+ * Pick the Kannada variant of a collection field when present, else English.
+ *
+ * Collection content is authored once in English; Kannada lives in optional
+ * sibling fields (headline / headlineKn). An empty Kannada field must fall
+ * back silently — a half-translated entry should look English, never broken.
+ */
+export function pickKn<T extends Record<string, any>>(
+  data: T,
+  field: string,
+  locale: Locale,
+): string {
+  if (locale === defaultLang) return data[field];
+  return data[`${field}Kn`] || data[field];
+}

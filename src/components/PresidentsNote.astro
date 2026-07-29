@@ -1,5 +1,5 @@
 ---
-import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+import { getLocale, useTranslations, localizePath, pickKn } from "../i18n/utils";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -22,7 +22,7 @@ const notes = allMembers
           <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
             {t("home.note.eyebrow")}
           </div>
-          <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">In their own words</h2>
+          <h2 class="font-serif text-[clamp(26px,3.2vw,40px)] font-normal">{t("home.note.heading")}</h2>
         </div>
 
         <div class="relative grid items-end gap-10" style="grid-template-columns: 1fr;" data-notes-root>
@@ -49,14 +49,14 @@ const notes = allMembers
                   />
                 </svg>
                 <p class="text-pretty flex min-h-[clamp(110px,14vw,140px)] items-start font-handwriting text-[clamp(18px,1.7vw,21px)] leading-[1.4] text-mdpva-ink">
-                  {member.data.homeMessage}
+                  {pickKn(member.data, "homeMessage", locale)}
                 </p>
                 <div class="mt-4 flex items-center gap-3">
                   <span class="h-px w-10 bg-mdpva-gold" aria-hidden="true" />
                   <div>
                     <div class="font-serif text-[16px] font-medium text-mdpva-ink">{member.data.name}</div>
                     <div class="text-[12px] font-semibold tracking-[0.12em] text-mdpva-accent uppercase">
-                      {member.data.designation}
+                      {t(`designation.${member.data.designation}` as any)}
                     </div>
                   </div>
                 </div>

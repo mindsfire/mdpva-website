@@ -28,7 +28,9 @@ const stats = [
         {t("home.mission.heading")}
       </h2>
       <p class="max-w-[560px] text-base leading-relaxed text-mdpva-body">
-        {about?.body}
+        {/* bodyKn is frontmatter while body is the markdown content, so this
+            can't use pickKn — same fallback rule, written out. */}
+        {locale === "kn" && about?.data.bodyKn ? about.data.bodyKn : about?.body}
       </p>
     </div>
     <div

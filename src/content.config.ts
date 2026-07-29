@@ -47,6 +47,9 @@ const pages = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
   schema: z.object({
     title: z.string(),
+    // Kannada rendering of the markdown body. Held in frontmatter rather than
+    // a second entry so one page stays one file in the CMS.
+    bodyKn: z.string().optional(),
   }),
 });
 
@@ -58,6 +61,11 @@ const heroSlides = defineCollection({
     description: z.string(),
     image: z.string(),
     order: z.number().int(),
+    // Optional Kannada overrides. Empty falls back to the English field, so a
+    // half-translated slide deck can never render a broken page.
+    eyebrowKn: z.string().optional(),
+    headlineKn: z.string().optional(),
+    descriptionKn: z.string().optional(),
   }),
 });
 
@@ -103,6 +111,7 @@ const board = defineCollection({
     order: z.number().int(),
     photo: z.string(),
     note: z.string().optional(),
+    noteKn: z.string().optional(),
     // Display label, e.g. "2025-27" — purely cosmetic.
     term: z.string(),
     // Drives which term is "current": whichever members have the highest
@@ -116,6 +125,8 @@ const board = defineCollection({
     // Transparent cutout portrait (no background) for the homepage note
     // section, distinct from the circular `photo` used on /board.
     cutoutPhoto: z.string().optional(),
+    // Kannada version of homeMessage; falls back to English when empty.
+    homeMessageKn: z.string().optional(),
   }),
 });
 

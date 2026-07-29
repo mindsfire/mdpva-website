@@ -84,6 +84,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Body (Kannada)", name: "bodyKn", widget: "text", required: false, hint: "Leave blank to show the English text on the Kannada site" }
 
   - name: "hero_slides"
     label: "Homepage Hero Slides"
@@ -98,6 +99,9 @@ collections:
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Order", name: "order", widget: "number", value_type: "int", hint: "Slides display lowest-to-highest" }
+      - { label: "Eyebrow label (Kannada)", name: "eyebrowKn", widget: "string", required: false, hint: "Leave blank to show the English text on the Kannada site" }
+      - { label: "Headline (Kannada)", name: "headlineKn", widget: "string", required: false, hint: "Leave blank to show the English text on the Kannada site" }
+      - { label: "Description (Kannada)", name: "descriptionKn", widget: "text", required: false, hint: "Leave blank to show the English text on the Kannada site" }
 
   - name: "blog"
     label: "Blog Posts"
@@ -113,6 +117,7 @@ collections:
       - { label: "Author", name: "author", widget: "string" }
       - { label: "Excerpt", name: "excerpt", widget: "text", hint: "Short summary shown on the blog list and in search results" }
       - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Body (Kannada)", name: "bodyKn", widget: "text", required: false, hint: "Leave blank to show the English text on the Kannada site" }
 
   - name: "press"
     label: "Press / In the Media"
@@ -160,6 +165,7 @@ collections:
       - { label: "Order within tier", name: "order", widget: "number", value_type: "int" }
       - { label: "Photo", name: "photo", widget: "image" }
       - { label: "Note", name: "note", widget: "string", required: false, hint: "e.g. Former MLA, K.R. Constituency" }
+      - { label: "Sub-line (Kannada)", name: "noteKn", widget: "string", required: false, hint: "Leave blank to show the English text on the Kannada site" }
       - { label: "Term", name: "term", widget: "string", hint: "Display label, e.g. 2025-27" }
       - label: "Term start year"
         name: "termStartYear"
@@ -171,6 +177,11 @@ collections:
         widget: "text"
         required: false
         hint: "Only Honorary President / President need this — shown in the homepage note section. Leave blank for everyone else."
+      - label: "Homepage welcome message (Kannada)"
+        name: "homeMessageKn"
+        widget: "text"
+        required: false
+        hint: "Leave blank to show the English message on the Kannada site."
       - label: "Cutout photo (transparent, no background)"
         name: "cutoutPhoto"
         widget: "image"
