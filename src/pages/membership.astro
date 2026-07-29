@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import PageHero from "../components/PageHero.astro";
@@ -7,97 +6,143 @@ import MembershipBenefits from "../components/MembershipBenefits.astro";
 import TestimonialsMarquee from "../components/TestimonialsMarquee.astro";
 import Footer from "../components/Footer.astro";
 
-const plans = (await getCollection("membershipPlans")).sort((a, b) => a.data.order - b.data.order);
+// Tier-neutral by design — membership categories and fees are deliberately not
+// published, so nothing here may imply that some members receive more than
+// others. Copy salvaged from the retired membership-plans collection.
+const includes = [
+  "MDPVA professional ID and certification",
+  "All workshops, photo walks, and the district salon",
+  "Members-only job board and second-shooter calls",
+  "Priority for official coverage pools (Dasara & district events)",
+  "Dispute support with venues and authorities",
+  "Voting rights at the AGM",
+];
 
 const coverage = [
   {
     title: "Who can join",
-    body: "Working photographers and videographers based in Mysuru district — studios, freelancers, cinematographers, and drone operators. Students and apprentices join as Associates.",
+    body: "Working photographers and videographers based in Mysuru district — studios, freelancers, cinematographers, and drone operators. Students and apprentices are welcome too.",
   },
   {
     title: "What membership covers",
     body: "Association ID and certification, all workshops and photo walks, the members-only job board, dispute support with venues and authorities, and voting rights at the AGM.",
-  },
-  {
-    title: "How to apply",
-    body: "Visit the association office with two photographs, ID proof, and proof of professional work, or start by writing to office@mdpva.in. Applications are verified by the executive committee.",
   },
 ];
 ---
 
 <Layout
   title="Membership"
-  description="Join the Mysuru District Photographers and Videographers Association ® — plans, prices, benefits, and how to apply. Annual, Life, and Associate memberships for the district's professionals."
+  description="Join the Mysuru District Photographers and Videographers Association ® — what membership includes, who can join, and how to apply. Certification, workshops, and referrals for the district's professionals."
 >
   <Header />
   <PageHero
     eyebrow="Membership"
     title="Stand with the district's professionals"
-    description="Certification, workshops, referrals, and a professional community behind you — pick the plan that fits where you are in your career."
+    description="Certification, workshops, referrals, and a professional community behind you — recognised across Mysuru district since 2001."
   />
 
-  <section id="plans" class="bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16">
-    <div class="mx-auto max-w-[1100px]">
-      <div
-        class="grid items-stretch gap-6"
-        style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));"
-      >
-        {
-          plans.map((plan, i) => (
-            <div
-              class={`relative flex flex-col gap-6 border p-7 sm:p-9 ${
-                plan.data.highlighted
-                  ? "border-mdpva-accent bg-mdpva-ink text-mdpva-cream shadow-xl lg:-my-3 lg:py-12"
-                  : "border-mdpva-border-alt bg-mdpva-white"
-              }`}
-              data-reveal
-              style={`--reveal-delay:${i * 100}ms`}
-            >
-              {plan.data.highlighted && (
-                <span class="absolute -top-3 left-7 bg-mdpva-accent px-3 py-1 text-[10px] font-semibold tracking-[0.16em] text-mdpva-cream uppercase">
-                  Most valued
-                </span>
-              )}
-              <div>
-                <h2 class="font-serif text-[24px] font-medium">{plan.data.name}</h2>
-                <div class="mt-4 flex items-baseline gap-2">
-                  <span class="font-serif text-[clamp(38px,4vw,52px)] leading-none font-medium">
-                    {plan.data.price}
-                  </span>
-                  <span class={`text-sm ${plan.data.highlighted ? "text-mdpva-cream/60" : "text-mdpva-muted"}`}>
-                    {plan.data.period}
-                  </span>
-                </div>
-              </div>
-              <ul class="m-0 flex flex-1 list-none flex-col gap-3 p-0">
-                {plan.data.features.map((feature) => (
-                  <li class="flex items-start gap-3 text-[14px] leading-relaxed">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" class={`mt-1 shrink-0 ${plan.data.highlighted ? "text-mdpva-gold" : "text-mdpva-accent"}`}>
-                      <path d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span class={plan.data.highlighted ? "text-mdpva-cream/85" : "text-mdpva-body"}>
-                      {feature}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <a
-                href="/contact"
-                class={`rounded-sm px-6 py-3.5 text-center text-[13px] font-semibold tracking-wider uppercase transition-colors ${
-                  plan.data.highlighted
-                    ? "bg-mdpva-accent text-mdpva-cream hover:bg-mdpva-accent-hover"
-                    : "border border-mdpva-ink text-mdpva-ink hover:bg-mdpva-ink hover:text-mdpva-cream"
-                }`}
-              >
-                Apply now
-              </a>
-            </div>
-          ))
-        }
+  <section
+    id="apply"
+    class="overflow-hidden bg-mdpva-paper px-5 py-[clamp(48px,7vw,90px)] sm:px-8 lg:px-16"
+  >
+    <div class="mx-auto grid max-w-[1100px] items-start gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+      <div data-reveal>
+        <div class="mb-3.5 text-xs font-semibold tracking-[0.22em] text-mdpva-accent uppercase">
+          What membership includes
+        </div>
+        <h2 class="text-pretty mb-8 max-w-[520px] font-serif text-[clamp(24px,3vw,34px)] font-normal">
+          Everything the association puts behind its members.
+        </h2>
+        <ul class="m-0 flex list-none flex-col gap-4 p-0">
+          {
+            includes.map((item) => (
+              <li class="flex items-start gap-3.5 text-[15px] leading-relaxed text-mdpva-body">
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  aria-hidden="true"
+                  class="mt-1 shrink-0 text-mdpva-accent"
+                >
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
       </div>
-      <p class="mt-8 text-center text-[13px] text-mdpva-muted" data-reveal>
-        Prices are indicative — confirm current fees with the association office before applying.
-      </p>
+
+      <div
+        class="relative isolate overflow-hidden bg-mdpva-ink p-8 text-mdpva-cream sm:p-10"
+        data-reveal
+        style="--reveal-delay:150ms"
+      >
+        {/* Ambient loop B — aperture turning slowly behind the card content.
+            Transform-only, so it composites on the GPU. Clipped by the card's
+            own overflow-hidden, which also keeps it off the page's width. */}
+        <svg
+          class="mdpva-aperture pointer-events-none absolute -top-24 -right-24 -z-10 h-[420px] w-[420px] text-mdpva-gold opacity-[0.07]"
+          viewBox="-110 -110 220 220"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          aria-hidden="true"
+        >
+          <circle cx="0" cy="0" r="100" />
+          <path d="M45 0 22.5 38.97 -22.5 38.97 -45 0 -22.5 -38.97 22.5 -38.97Z" />
+          <path d="M45 0 57.36 81.92" />
+          <path d="M22.5 38.97 -42.26 90.63" />
+          <path d="M-22.5 38.97 -99.62 8.72" />
+          <path d="M-45 0 -57.36 -81.92" />
+          <path d="M-22.5 -38.97 42.26 -90.63" />
+          <path d="M22.5 -38.97 99.62 -8.72" />
+        </svg>
+
+        {/* Ambient loop A — gold segment travelling the card's border.
+            pathLength="100" normalises the perimeter so the dash values in
+            global.css hold at any card size. overflow-visible stops the SVG
+            clipping the outer half of the stroke. */}
+        <svg
+          class="mdpva-trace pointer-events-none absolute inset-0 h-full w-full overflow-visible text-mdpva-gold"
+          aria-hidden="true"
+        >
+          <rect
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            pathLength="100"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          />
+        </svg>
+
+        <h2 class="font-serif text-[26px] font-medium">Become a member</h2>
+        <p class="mt-4 text-sm leading-relaxed text-mdpva-cream/70">
+          Applications are verified by the executive committee. Visit the association office
+          with two photographs, ID proof, and proof of professional work.
+        </p>
+        <a
+          href="/contact"
+          class="mt-7 block rounded-sm bg-mdpva-accent px-6 py-3.5 text-center text-[13px] font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-mdpva-accent-hover"
+        >
+          Apply now
+        </a>
+        <p class="mt-4 text-center text-[13px] text-mdpva-cream/60">
+          or write to{" "}
+          <a href="mailto:office@mdpva.in" class="text-mdpva-gold transition-colors hover:text-mdpva-cream">
+            office@mdpva.in
+          </a>
+        </p>
+        <p class="mt-7 border-t border-mdpva-border-dark pt-5 text-[13px] leading-relaxed text-mdpva-cream/50">
+          Membership fees are confirmed by the association office.
+        </p>
+      </div>
     </div>
   </section>
 

@@ -94,18 +94,6 @@ const testimonials = defineCollection({
   }),
 });
 
-const membershipPlans = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/membership-plans' }),
-  schema: z.object({
-    name: z.string(),
-    price: z.string(),
-    period: z.string(),
-    features: z.array(z.string()),
-    highlighted: z.boolean().default(false),
-    order: z.number().int(),
-  }),
-});
-
 const board = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/board' }),
   schema: z.object({
@@ -140,6 +128,5 @@ export const collections = {
   blog,
   press,
   testimonials,
-  membershipPlans,
   board,
 };

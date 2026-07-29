@@ -142,24 +142,6 @@ collections:
       - { label: "Photo", name: "photo", widget: "image", required: false }
       - { label: "Order", name: "order", widget: "number", value_type: "int" }
 
-  - name: "membership_plans"
-    label: "Membership Plans"
-    folder: "src/content/membership-plans"
-    create: true
-    slug: "{{slug}}"
-    extension: "md"
-    format: "frontmatter"
-    fields:
-      - { label: "Plan name", name: "name", widget: "string" }
-      - { label: "Price", name: "price", widget: "string", hint: "e.g. ₹1,000" }
-      - { label: "Period", name: "period", widget: "string", hint: "e.g. per year / one-time" }
-      - label: "What's included"
-        name: "features"
-        widget: "list"
-        field: { label: "Feature", name: "feature", widget: "string" }
-      - { label: "Highlight this plan", name: "highlighted", widget: "boolean", default: false }
-      - { label: "Order", name: "order", widget: "number", value_type: "int" }
-
   - name: "board"
     label: "Board of Directors"
     folder: "src/content/board"

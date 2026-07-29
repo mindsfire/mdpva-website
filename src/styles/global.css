@@ -231,3 +231,39 @@
     transform: none;
   }
 }
+
+/* Membership apply card — two ambient loops that run for as long as the page
+   is open, rather than firing once on scroll.
+
+   The trace is a gold segment travelling the card's border. `pathLength="100"`
+   on the rect normalises the perimeter to 100 units whatever the card's real
+   size, so the dash values below hold at every breakpoint without hard-coding
+   lengths. Under reduced motion the dashes are dropped entirely and it settles
+   into an ordinary static border. */
+.mdpva-trace rect {
+  stroke-dasharray: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mdpva-trace rect {
+    stroke-dasharray: 18 82;
+    animation: traceLoop 10s linear infinite;
+  }
+}
+@keyframes traceLoop {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+/* The aperture is transform-only, so it composites on the GPU and costs
+   essentially nothing to spin. Reduced motion leaves it visible but still. */
+@media (prefers-reduced-motion: no-preference) {
+  .mdpva-aperture {
+    animation: apertureSpin 60s linear infinite;
+  }
+}
+@keyframes apertureSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
