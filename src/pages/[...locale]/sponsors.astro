@@ -1,9 +1,13 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import PageHero from "../components/PageHero.astro";
-import Footer from "../components/Footer.astro";
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import PageHero from "../../components/PageHero.astro";
+import Footer from "../../components/Footer.astro";
+
+export function getStaticPaths() {
+  return [{ params: { locale: undefined } }, { params: { locale: "kn" } }];
+}
 
 const tierRank = { platinum: 0, gold: 1, silver: 2 } as const;
 const sponsors = (await getCollection("sponsors")).sort(

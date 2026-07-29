@@ -1,8 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+
+export function getStaticPaths() {
+  return [{ params: { locale: undefined } }, { params: { locale: "kn" } }];
+}
 
 // Legacy content is intentionally hardcoded (one-time copy, edited in code),
 // unlike the CMS-driven collections. Placeholder story — user corrects.

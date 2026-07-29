@@ -1,0 +1,78 @@
+---
+import { languages, type Locale } from "../i18n/ui";
+import { getLocale, useTranslations, alternatePath, locales } from "../i18n/utils";
+
+interface Props {
+  /** "header" is compact (EN | ಕನ್ನಡ); "footer" is roomier with full names. */
+  variant?: "header" | "footer";
+}
+
+const { variant = "header" } = Astro.props;
+
+const current = getLocale(Astro.url);
+const t = useTranslations(current);
+
+// Built from the CURRENT path, so switching language keeps you on the page you
+// are reading. Sending the user to the homepage instead is the single most
+// common bug in bilingual sites.
+const options = locales.map((locale: Locale) => ({
+  locale,
+  label: variant === "header" && locale === "en" ? "EN" : languages[locale],
+  href: alternatePath(Astro.url.pathname, locale),
+  active: locale === current,
+}));
+
+const isHeader = variant === "header";
+---
+
+<div
+  class:list={[
+    "flex items-center",
+    isHeader ? "gap-1.5 text-xs" : "gap-2 text-[13px]",
+  ]}
+  role="group"
+  aria-label={t("a11y.language")}
+>
+  {
+    options.map((opt, i) => (
+      <>
+        {i > 0 && (
+          <span
+            aria-hidden="true"
+            class:list={[
+              isHeader ? "text-mdpva-cream/30" : "text-mdpva-cream/25",
+            ]}
+          >
+            {isHeader ? "|" : "·"}
+          </span>
+        )}
+        {opt.active ? (
+          <span
+            aria-current="true"
+            lang={opt.locale}
+            class:list={[
+              "font-semibold",
+              isHeader ? "text-mdpva-cream" : "text-mdpva-cream/90",
+            ]}
+          >
+            {opt.label}
+          </span>
+        ) : (
+          <a
+            href={opt.href}
+            lang={opt.locale}
+            hreflang={opt.locale}
+            class:list={[
+              "transition-colors",
+              isHeader
+                ? "text-mdpva-cream/60 hover:text-mdpva-cream"
+                : "text-mdpva-cream/60 hover:text-mdpva-gold",
+            ]}
+          >
+            {opt.label}
+          </a>
+        )}
+      </>
+    ))
+  }
+</div>

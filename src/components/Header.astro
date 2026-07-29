@@ -1,18 +1,25 @@
 ---
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { getLocale, useTranslations, localizePath } from "../i18n/utils";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const L = (path: string) => localizePath(path, locale);
+
 const links = [
-  { href: "/about", label: "About" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/events", label: "Events" },
-  { href: "/blog", label: "Blog" },
-  { href: "/press", label: "Press" },
-  { href: "/membership", label: "Membership" },
+  { href: L("/about"), label: t("nav.about") },
+  { href: L("/gallery"), label: t("nav.gallery") },
+  { href: L("/events"), label: t("nav.events") },
+  { href: L("/blog"), label: t("nav.blog") },
+  { href: L("/press"), label: t("nav.press") },
+  { href: L("/membership"), label: t("nav.membership") },
 ];
 ---
 
 <header
   class="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-4 px-5 py-4 sm:px-8 sm:py-6 lg:px-16 lg:py-7"
 >
-  <a href="/" aria-label="MDPVA home" class="flex items-center gap-2.5">
+  <a href={L("/")} aria-label={t("a11y.home")} class="flex items-center gap-2.5">
     <img src="/uploads/mdpva-logo.png" alt="" class="h-10 w-10 sm:h-11 sm:w-11" width="180" height="180" />
     <span class="font-serif text-2xl font-semibold tracking-wide text-mdpva-cream">MDPVA</span>
   </a>
@@ -30,25 +37,26 @@ const links = [
       ))
     }
     <a
-      href="/membership#apply"
+      href={`${L("/membership")}#apply`}
       class="rounded-sm border border-mdpva-cream/40 px-4.5 py-2.5 text-xs font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-white hover:text-mdpva-ink"
     >
-      Join
+      {t("cta.join")}
     </a>
+    <LanguageSwitcher />
   </nav>
 
   {/* Mobile: Join CTA + hamburger */}
   <div class="flex items-center gap-3 lg:hidden">
     <a
-      href="/membership#apply"
+      href={`${L("/membership")}#apply`}
       class="rounded-sm border border-mdpva-cream/40 px-4 py-2 text-xs font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-white hover:text-mdpva-ink"
     >
-      Join
+      {t("cta.join")}
     </a>
     <button
       type="button"
       data-menu-open
-      aria-label="Open menu"
+      aria-label={t("a11y.openMenu")}
       aria-expanded="false"
       aria-controls="mobile-menu"
       class="flex h-9 w-9 items-center justify-center text-mdpva-cream"
@@ -72,12 +80,12 @@ const links = [
   <nav
     data-menu-panel
     class="absolute top-0 right-0 flex h-full w-72 max-w-[80%] translate-x-full flex-col gap-2 bg-mdpva-ink px-6 py-6 shadow-2xl transition-transform duration-300"
-    aria-label="Mobile navigation"
+    aria-label={t("a11y.mobileNav")}
   >
     <button
       type="button"
       data-menu-close
-      aria-label="Close menu"
+      aria-label={t("a11y.closeMenu")}
       class="mb-4 flex h-9 w-9 items-center justify-center self-end text-mdpva-cream"
     >
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -97,12 +105,15 @@ const links = [
       ))
     }
     <a
-      href="/membership#apply"
+      href={`${L("/membership")}#apply`}
       data-menu-link
       class="mt-6 rounded-sm bg-mdpva-accent px-6 py-3.5 text-center text-sm font-semibold tracking-wider text-mdpva-cream uppercase transition-colors hover:bg-mdpva-accent-hover"
     >
-      Become a Member
+      {t("cta.becomeMember")}
     </a>
+    <div class="mt-6 flex justify-center border-t border-mdpva-border-dark pt-5">
+      <LanguageSwitcher variant="footer" />
+    </div>
   </nav>
 </div>
 

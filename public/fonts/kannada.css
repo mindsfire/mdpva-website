@@ -1,0 +1,74 @@
+/* Kannada webfonts — served as a static asset, linked ONLY from /kn/ pages.
+ *
+ * These are NOT imported through Fontsource's own CSS. Astro hoists a
+ * component's CSS imports into a bundle shared by every page that uses the
+ * component — and since the fonts were pulled in from a component inside
+ * Layout.astro, conditionally rendering that component still shipped all
+ * 238 KB to English pages. Verified: /about and /kn/about linked the identical
+ * stylesheet.
+ *
+ * Delivering the @font-face rules from public/ instead keeps the decision in
+ * the markup, where the `locale === "kn"` check can actually gate the request.
+ *
+ * The woff2 files are copied from the Fontsource packages, which stay in
+ * package.json as the provenance record and upgrade path.
+ *
+ * unicode-range values are taken verbatim from Fontsource's Kannada subsets:
+ * because they cover only Kannada codepoints, a browser will not download
+ * these files for Latin-only text even if the rules are present.
+ */
+
+/* Headings — Anek Kannada (Ek Type). 111 KB */
+@font-face {
+  font-family: "Anek Kannada Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(/fonts/anek-kannada-kannada-wght-normal.woff2) format("woff2-variations");
+  unicode-range: U+0951-0952, U+0964-0965, U+0C80-0CF3, U+1CD0, U+1CD2-1CD3,
+    U+1CDA, U+1CF2, U+1CF4, U+200C-200D, U+20B9, U+25CC, U+A830-A835;
+}
+
+/* Body — Noto Sans Kannada. 89 KB */
+@font-face {
+  font-family: "Noto Sans Kannada Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(/fonts/noto-sans-kannada-kannada-wght-normal.woff2)
+    format("woff2-variations");
+  unicode-range: U+0951-0952, U+0964-0965, U+0C80-0CF3, U+1CD0, U+1CD2-1CD3,
+    U+1CDA, U+1CF2, U+1CF4, U+200C-200D, U+20B9, U+25CC, U+A830-A835;
+}
+
+/* President's note — Hubballi, Regular only. 38 KB */
+@font-face {
+  font-family: "Hubballi";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(/fonts/hubballi-kannada-400-normal.woff2) format("woff2");
+  unicode-range: U+0951-0952, U+0964-0965, U+0C80-0CF3, U+1CD0, U+1CD2-1CD3,
+    U+1CDA, U+1CF2, U+1CF4, U+200C-200D, U+20B9, U+25CC, U+A830-A835;
+}
+
+/* The Latin faces stay SECOND in each stack on purpose. Font fallback is
+   per-glyph, not per-element, so Latin characters inside Kannada strings —
+   "MDPVA", phone numbers, office@mdpva.in — keep rendering in Archivo and
+   Newsreader with no extra markup.
+
+   Tunga is last as a free fallback for Windows machines if a webfont request
+   fails. It is named only, never redistributed — it is Microsoft's and carries
+   no web licence. */
+html[lang="kn"] {
+  --font-sans: "Noto Sans Kannada Variable", "Archivo", "Tunga", ui-sans-serif,
+    system-ui, sans-serif;
+  --font-serif: "Anek Kannada Variable", "Newsreader", "Tunga", ui-serif, Georgia,
+    serif;
+  --font-handwriting: "Hubballi", "Caveat", cursive;
+}
+
+/* Kannada has stacked conjuncts that collide at Latin line-heights. */
+html[lang="kn"] body {
+  line-height: 1.75;
+}
