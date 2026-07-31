@@ -3,7 +3,7 @@ name: Sri Vijay G.
 designation: President
 tier: 2
 order: 1
-photo: /uploads/whatsapp-image-2026-07-31-at-1.10.03-pm.webp
+photo: /uploads/whatsapp-image-2026-07-31-at-1.16.48-pm.webp
 note: ''
 term: 2025-27
 termStartYear: 2025
