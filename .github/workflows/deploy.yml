@@ -1,0 +1,46 @@
+name: Build & deploy
+
+# The site is `output: 'static'`, so every date comparison — notably the
+# upcoming/past split in src/pages/[...locale]/events.astro and the homepage
+# strip in src/components/UpcomingEvents.astro — is evaluated once, at build
+# time, and then frozen into the HTML. Without a rebuild, an event stays under
+# "Upcoming" forever after its date passes. The nightly cron below is what
+# actually rolls events over; the push trigger just gives us normal CI/CD.
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # 19:00 UTC = 00:30 IST, i.e. just after the date flips for our audience.
+    - cron: "0 19 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # Build in the audience's timezone, not the runner's UTC. Otherwise
+      # `new Date()` lags Mysuru by 5.5h and an event lingers under "Upcoming"
+      # for an extra day after it has actually happened.
+      TZ: Asia/Kolkata
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
