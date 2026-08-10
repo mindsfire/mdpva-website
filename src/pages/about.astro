@@ -112,8 +112,8 @@ const foundersPreview = [
                 {...(i % 2 === 0 ? { "data-reveal-left": "" } : { "data-reveal-right": "" })}
               >
                 <span
-                  class={`absolute top-1 left-[9px] h-3.5 w-3.5 rounded-full border-2 border-mdpva-gold bg-mdpva-paper sm:left-auto ${
-                    i % 2 === 0 ? "sm:-right-[7px]" : "sm:-left-[7px]"
+                  class={`absolute top-1 left-[9px] h-3.5 w-3.5 rounded-full border-2 border-mdpva-gold bg-mdpva-paper ${
+                    i % 2 === 0 ? "sm:left-auto sm:-right-[7px]" : "sm:right-auto sm:-left-[7px]"
                   }`}
                   aria-hidden="true"
                 />
