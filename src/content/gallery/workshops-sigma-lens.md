@@ -1,7 +1,7 @@
 ---
-title: "Sigma Lens Workshop"
-photographer: "Documented by Sri Siddalinga Prasad K. G."
-category: "workshops"
-image: "/uploads/gallery-workshops-sigma-lens.svg"
+title: Sigma Lens Workshop
+photographer: Organized by MDPVA
+category: workshops
+image: /uploads/x-4.jpg.webp
 year: 2026
 ---
