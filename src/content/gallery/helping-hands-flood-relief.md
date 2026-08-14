@@ -1,7 +1,7 @@
 ---
-title: "Flood Relief Kit Distribution"
-photographer: "Documented by Sri Rajagopal H."
-category: "helping-hands"
-image: "/uploads/gallery-helping-hands-flood-relief.svg"
+title: Calender Launch Event
+photographer: By MDPVA
+category: events
+image: /uploads/cal.webp
 year: 2025
 ---
