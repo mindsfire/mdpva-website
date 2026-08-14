@@ -6,11 +6,11 @@ import PageHero from "../components/PageHero.astro";
 import Footer from "../components/Footer.astro";
 
 const items = (await getCollection("gallery")).sort((a, b) => b.data.year - a.data.year);
-const categories = ["all", "helping-hands", "hospital-care", "tributes", "workshops"] as const;
+const categories = ["all", "helping-hands", "events", "tributes", "workshops"] as const;
 const categoryLabels: Record<(typeof categories)[number], string> = {
   all: "All",
   "helping-hands": "Helping Hands",
-  "hospital-care": "Hospital Care",
+  events: "Events",
   tributes: "Tributes",
   workshops: "Workshops",
 };

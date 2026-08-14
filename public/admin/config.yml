@@ -70,7 +70,7 @@ collections:
       - label: "Category"
         name: "category"
         widget: "select"
-        options: ["helping-hands", "hospital-care", "tributes", "workshops"]
+        options: ["helping-hands", "events", "tributes", "workshops"]
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Year", name: "year", widget: "number", value_type: "int" }
 
