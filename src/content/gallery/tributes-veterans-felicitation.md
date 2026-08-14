@@ -1,7 +1,7 @@
 ---
-title: "Felicitating Our Veteran Photographers"
-photographer: "Documented by Sri Dhananjaya A."
-category: "tributes"
-image: "/uploads/gallery-tributes-veterans-felicitation.svg"
+title: Fujifilm - Master the Wedding frame
+photographer: By Vijay Reddy
+category: workshops
+image: /uploads/fuji.jpg.webp
 year: 2025
 ---
