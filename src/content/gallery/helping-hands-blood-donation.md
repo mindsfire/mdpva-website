@@ -1,7 +1,7 @@
 ---
-title: "Annual Blood Donation Camp"
-photographer: "Documented by Sri Umesh K."
-category: "helping-hands"
-image: "/uploads/gallery-helping-hands-blood-donation.svg"
+title: AI Workshop - Institution of Engineers Hall
+photographer: Associated by MDPVA
+category: workshops
+image: /uploads/x-1.jpg.webp
 year: 2025
 ---
