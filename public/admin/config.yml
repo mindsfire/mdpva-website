@@ -4,6 +4,9 @@ backend:
   branch: main
   base_url: https://mdpva-cms-auth.sandeshparjanya.workers.dev
 
+site_url: https://mdpva.org
+logo_url: https://mdpva.org/uploads/mdpva-logo.png
+
 publish_mode: simple
 media_folder: "public/uploads"
 public_folder: "/uploads"

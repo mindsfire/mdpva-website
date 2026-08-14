@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/icon.png" />
     <title>MDPVA CMS</title>
     <script>
       // Sveltia sets document.title to "Sveltia CMS" at runtime, so we re-assert
@@ -18,9 +18,9 @@
           icon.rel = "icon";
           document.head.appendChild(icon);
         }
-        if (icon.getAttribute("href") !== "/favicon.svg") {
-          icon.type = "image/svg+xml";
-          icon.href = "/favicon.svg";
+        if (icon.getAttribute("href") !== "/icon.png") {
+          icon.type = "image/png";
+          icon.href = "/icon.png";
         }
       }
       brand();
@@ -28,6 +28,29 @@
         childList: true,
         subtree: true,
         characterData: true,
+      });
+
+      // The "Sveltia CMS" product name is hardcoded into the bundle's UI
+      // strings (sign-in heading, welcome message, etc.) with no config
+      // override, so relabel it in the DOM wherever it appears as text.
+      // document.body doesn't exist yet while this head script runs, so wait
+      // for it before attaching the observer.
+      function relabelBody() {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        let node;
+        while ((node = walker.nextNode())) {
+          if (node.nodeValue.includes("Sveltia CMS")) {
+            node.nodeValue = node.nodeValue.replaceAll("Sveltia CMS", "MDPVA CMS");
+          }
+        }
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        relabelBody();
+        new MutationObserver(relabelBody).observe(document.body, {
+          childList: true,
+          subtree: true,
+          characterData: true,
+        });
       });
     </script>
   </head>
