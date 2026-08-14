@@ -1,9 +1,12 @@
 ---
-name: "Sri M. N. Manjunath"
-designation: "Director"
+name: Sri M. N. Manjunath
+designation: Director
 tier: 4
 order: 4
-photo: "/uploads/board-mn-manjunath.svg"
-term: "2025-27"
+photo: /uploads/san_7176-f.jpg.webp
+note: ''
+term: 2025-27
 termStartYear: 2025
+homeMessage: ''
+cutoutPhoto: ''
 ---
