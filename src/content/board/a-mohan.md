@@ -1,9 +1,12 @@
 ---
-name: "Sri A. Mohan"
-designation: "Director"
+name: Sri A. Mohan
+designation: Director
 tier: 4
-order: 2
-photo: "/uploads/board-a-mohan.svg"
-term: "2025-27"
+order: 1
+photo: /uploads/board-a-mohan.svg
+note: ''
+term: 2025-27
 termStartYear: 2025
+homeMessage: ''
+cutoutPhoto: ''
 ---
