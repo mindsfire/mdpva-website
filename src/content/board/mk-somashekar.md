@@ -3,7 +3,7 @@ name: Sri M. K. Somashekar
 designation: Honorary President
 tier: 1
 order: 1
-photo: /uploads/somanna.jpg.webp
+photo: /uploads/someshekar.webp
 note: Former MLA, K.R. Constituency
 term: 2025-27
 termStartYear: 2025
