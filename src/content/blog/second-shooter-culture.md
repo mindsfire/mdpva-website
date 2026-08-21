@@ -2,7 +2,7 @@
 title: Building a Second-Shooter Culture in the District
 date: 2026-07-18
 coverImage: /uploads/chatgpt-image-aug-16-2026-10_30_02-pm.webp
-author: Sri Vijay G.
+author: Sri Vijay B.
 excerpt: Why the association's assignment-sharing norms make every member's business stronger.
 ---
 
