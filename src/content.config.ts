@@ -27,7 +27,8 @@ const events = defineCollection({
     location: z.string(),
     description: z.string(),
     image: z.string(),
-    registrationUrl: z.string().url().optional(),
+    // CMS writes '' when the optional field is left blank; treat that as no URL.
+    registrationUrl: z.literal('').transform(() => undefined).or(z.string().url()).optional(),
     isFeatured: z.boolean().default(false),
   }),
 });
